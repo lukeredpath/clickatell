@@ -69,7 +69,7 @@ module Clickatell
       end
 
       def with_params(param_hash)
-        param_string = '?' + param_hash.map { |key, value| "#{key}=#{value}" }.join('&')
+        param_string = '?' + param_hash.map { |key, value| "#{key}=#{value}" }.sort.join('&')
         return URI.parse(File.join(api_service_uri, @command_name + URI.encode(param_string)))
       end
 
