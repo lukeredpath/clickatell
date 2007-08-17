@@ -1,1 +1,2 @@
+require 'rubygems'
 require 'spec'

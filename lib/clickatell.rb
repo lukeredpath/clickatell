@@ -1,4 +1,7 @@
 module Clickatell
 end
 
-require 'clickatell/version'
+require File.join(File.dirname(__FILE__), *%w[clickatell/version])
+require File.join(File.dirname(__FILE__), *%w[clickatell/api])
+require File.join(File.dirname(__FILE__), *%w[clickatell/response])
+require File.join(File.dirname(__FILE__), *%w[clickatell/connection])
