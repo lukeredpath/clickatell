@@ -1,10 +1,15 @@
 require 'net/http'
 
-module Clickatell  
+module Clickatell
+  # This module provides the core implementation of the Clickatell 
+  # HTTP service.
   module API
     
     class << self
       
+      # Authenticates using the specified credentials. Returns
+      # a session_id if successful which can be used in subsequent
+      # API calls.
       def authenticate(api_id, username, password)
         response = execute_command('auth',
           :api_id => api_id,
@@ -14,10 +19,22 @@ module Clickatell
         parse_response(response)['OK']
       end
       
+      # Pings the service with the specified session_id to keep the
+      # session alive.
       def ping(session_id)
         execute_command('ping', :session_id => session_id)
       end
       
+      # Sends a message +message_text+ to +recipient+. Recipient
+      # number should have an international dialing prefix and
+      # no leading zeros (unless you have set a default prefix
+      # in your clickatell account centre).
+      #
+      # +auth_options+: a hash of credentials to be used in this
+      # API call. Either api_id/username/password or session_id
+      # for an existing authenticated session.
+      #
+      # Returns a new message ID if successful.
       def send_message(recipient, message_text, auth_options)
         response = execute_command('sendmsg', {
           :to => recipient,
@@ -26,6 +43,9 @@ module Clickatell
         parse_response(response)['ID']
       end
       
+      # Returns the status of a message. Use message ID returned
+      # from original send_message call. See send_message() for
+      # auth_options.
       def message_status(message_id, auth_options)
         response = execute_command('querymsg', {
           :apimsgid => message_id 
@@ -34,17 +54,18 @@ module Clickatell
       end
 
       protected
+        # Builds a command and sends it via HTTP GET.
         def execute_command(command_name, parameters)
           Net::HTTP.get_response(
             Command.new(command_name).with_params(parameters)
           )
         end
         
-        def parse_response(raw_response)
+        def parse_response(raw_response) #:nodoc:
           Clickatell::Response.parse(raw_response)
         end
         
-        def auth_hash(options)
+        def auth_hash(options) #:nodoc:
           if options[:session_id]
             return {
               :session_id => options[:session_id]
@@ -60,6 +81,8 @@ module Clickatell
       
     end
     
+    # Represents a Clickatell HTTP gateway command in the form 
+    # of a complete URL (the raw, low-level request).
     class Command
       API_SERVICE_HOST = 'api.clickatell.com'
 
@@ -67,7 +90,8 @@ module Clickatell
         @command_name = command_name
         @options = { :secure => false }.merge(opts)
       end
-
+      
+      # Returns a URL for the given parameters (a hash).
       def with_params(param_hash)
         param_string = '?' + param_hash.map { |key, value| "#{key}=#{value}" }.sort.join('&')
         return URI.parse(File.join(api_service_uri, @command_name + URI.encode(param_string)))

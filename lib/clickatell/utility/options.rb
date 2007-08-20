@@ -3,7 +3,7 @@ require 'ostruct'
 
 module Clickatell
   module Utility
-    class Options
+    class Options #:nodoc:
       def self.parse(args)
         options = self.default_options
         parser = OptionParser.new do |opts|
