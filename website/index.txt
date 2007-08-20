@@ -1,37 +1,35 @@
 h1. Clickatell Ruby API
 
-h1. &#x2192; 'clickatell'
+h3. What is it?
 
+A Ruby interface to the "Clickatell":http://www.clickatell.com SMS gateway API.
 
-h2. What
+h3. Installing
 
-A Ruby interface to the Clickatell SMS gateway API.
+<p>Download the <a href="http://rubyforge.org/projects/clickatell">latest version of gem</a> or install using RubyGems</p>
 
+<pre><code>$ sudo gem install clickatell</code></pre>
 
-h2. Installing
-
-<pre>$ sudo gem install clickatell</pre>
-
-h2. The basics
+h3. The basics
 
 To use this gem, you will need sign up for an account at "the Clickatell website":http://www.clickatell.com. 
 Once you are registered and logged into your account centre, you should add 
 an HTTP API connection to your account. This will give you your API_ID.
 
-h2. Demonstration of usage
+h3. Demonstration of usage
 
 You can now use the library directly. You will need your API_ID as well as your
 account username and password.
 
-<pre syntax="ruby">
+<pre><code class="ruby">
 require 'rubygems'
 require 'clickatell'
 
 connection = Clickatell::Connection.new('your_api_id', 'your_username', 'your_password')
 connection.send_message('447771234567', 'Hello from clickatell')
-</pre>
+</code></pre>
   
-h3. Command-line SMS Utility
+h4. Command-line SMS Utility
 
 The Clickatell gem also comes with a command-line utility that will allow you
 to send an SMS directly from the command-line. 
@@ -39,23 +37,23 @@ to send an SMS directly from the command-line.
 You will need to create a YAML configuration file in your home directory, in a 
 file called .clickatell that resembles the following:
 
-<pre>
+<pre><code>
 # ~/.clickatell
 api_key: your_api_id
 username: your_username
 password: your_password
-</pre>
+</code></pre>
 
 You can then use the sms utility to send a message to a single recipient:
 
-<pre>
+<pre><code>
 $ sms 447771234567 'Hello from clickatell'
-</pre>
+</code></pre>
 
-h2. License
+h3. License
 
 This code is free to use under the terms of the MIT license. 
 
-h2. Contact
+h3. Contact
 
 Comments are welcome. Send an email to "Luke Redpath":mailto:contact@lukeredpath.co.uk email.

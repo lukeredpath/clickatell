@@ -1,0 +1,266 @@
+/* sydney color scheme: limechoc
+ * Author: Luke Redpath
+-----------------------------------------------------------------------------*/
+
+/* =layout 
+-----------------------------------------------------------------------------*/
+
+* {
+	margin: 0; padding: 0;
+}
+
+body {
+	background: #222;
+	border-top-color: #C9F005;
+}
+
+#wrapper {
+background: #000;
+}
+
+#container {
+	background: #111;
+}
+
+#footer_wrapper {
+	background-color: #222;
+}
+
+#footer {
+	color: #eee;
+	border-top-color: #111;
+}
+
+/* =typography 
+-----------------------------------------------------------------------------*/
+
+#header h1 {
+  color: #fff;
+}
+
+h1 a:link,
+h1 a:visited,
+h1 a:hover {
+	color: #ddd;
+}
+
+h1 span.tagline {
+	color: #C9F005;
+}
+
+h2 {
+	color: #666;
+}
+
+h3,
+h4 {
+  color: #fff;
+}
+
+p {
+	color: #ccc;
+}
+
+li {
+       color: #ccc;
+}
+
+p#fn1, p#fn2, p#fn3, p#fn4, p#fn5,
+p#fn6, p#fn7, p#fn8, p#fn9, p#fn10 {
+  color: #999 !important;
+  border-color-top: #aaa !important;
+}
+
+a:link {
+	color: #C9F005;
+}
+
+a:visited {
+	color: #C4DD06;
+}
+
+a:hover {
+	color: #FFFF02;
+}
+
+p.overview {
+	color: #555;
+}
+
+p strong {
+  color: #fff;
+}
+
+#latest_entry p.post_meta {
+	color: #ccc;
+}
+
+#footer {
+	color: #222;
+}
+
+#footer a:link,
+#footer a:visited {
+	color: #eee;
+}
+
+#footer a:hover {
+	color: #FFAE00;
+}
+
+#footer h3 {
+	color: #666;
+	border-bottom-color: #333;
+}
+
+#footer li {
+	border-bottom-color: #333;
+}
+
+/* =entry list
+-----------------------------------------------------------------------------*/
+
+#content ul.entry_list li {
+	border-bottom-color: #333;
+	color: #666;
+}
+
+/* =article
+-----------------------------------------------------------------------------*/
+
+div.article h2 {
+	color: #C9F005;
+}
+
+div.article h2 span.post_date {
+	color: #666;
+}
+
+div.article blockquote {
+
+  color: #fff;
+}
+
+div.article pre {
+	background: #191919;
+	color: #eee;
+	border-bottom-color: #333;
+}
+
+div.article p.post_meta {
+	border-top-color: #222;
+	color: #666;
+}
+
+/* =comments
+-----------------------------------------------------------------------------*/
+
+#comments {
+	background: #333; color: #ccc;
+}
+
+#comment-form {
+	background: #191919;
+	border-bottom-color: #C9F005;
+}
+
+div.comment {
+	border-bottom-color: #666;
+}
+
+div.comment h3 {
+	color: #999;
+}
+
+/* =form styles
+-----------------------------------------------------------------------------*/
+
+label {
+	color: #C9F005;
+}
+
+/* =code highlighting
+-----------------------------------------------------------------------------*/
+
+/** RUBY **/
+#content code.ruby span.comment {
+	color: #BD48B3;
+}
+
+#content code.ruby span.string {
+	color: #99FF00;
+}
+
+#content code.ruby span.brackets {
+	
+}
+
+#content code.ruby span.symbol {
+	color: #6BCFF7;
+}
+
+#content code.ruby span.keywords {
+	color: #FF8400;
+}
+
+/** YAML **/
+#content code.ruby span.key {
+  color: #FF8400;
+}
+
+/** JAVASCRIPT **/
+#content code.javascript span.comment {
+	color: #BD48B3;
+}
+
+#content code.javascript span.string {
+	color: #99FF00;
+}
+
+#content code.javascript span.brackets {
+	
+}
+
+#content code.javascript span.symbol {
+	color: #6BCFF7;
+}
+
+#content code.javascript span.keywords {
+	color: #FF8400;
+}
+
+/** HTML **/
+#content code.html span.tag {
+	color: #fff;
+}
+
+#content code.html span.attribute {
+	color: #FFD500;
+}
+
+#content code.html span.string {
+	color: #99FF00;
+}
+
+#content code.html span.comment {
+	color: #999;
+}
+
+#content code.html span.doctype {
+	color: #D7FF80;
+}
+
+
+/* =features
+-----------------------------------------------------------------------------*/
+
+div.plugin_feature {
+	border-bottom-color: #ddd;
+}
+
+/* =forms 
+-----------------------------------------------------------------------------*/
+
+input, textarea {
+       background: #444; color: #ddd
+}
