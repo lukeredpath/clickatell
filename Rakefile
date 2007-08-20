@@ -127,12 +127,19 @@ task :check_version do
   end
 end
 
-desc "Run the specs under spec/models"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ['--options', "spec/spec.opts"]
-  t.spec_files = FileList['spec/*_spec.rb']
+namespace :spec do
+  desc "Run the specs under spec"
+  Spec::Rake::SpecTask.new('all') do |t|
+    t.spec_opts = ['--options', "spec/spec.opts"]
+    t.spec_files = FileList['spec/*_spec.rb']
+  end
+  
+  desc "Run the specs under spec in specdoc format"
+  Spec::Rake::SpecTask.new('doc') do |t|
+    t.spec_opts = ['--format', "specdoc"]
+    t.spec_files = FileList['spec/*_spec.rb']
+  end
 end
 
 desc "Default task is to run specs"
-task :default => :spec
-
+task :default => 'spec:all'
