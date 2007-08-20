@@ -1,29 +1,23 @@
 #!/usr/bin/env ruby
-require 'yaml'
+require 'pp'
 
-local_lib = File.join(File.dirname(__FILE__), *%w[../lib/clickatell])
+local_libs = [
+ File.join(File.dirname(__FILE__), *%w[../lib/clickatell]),
+ File.join(File.dirname(__FILE__), *%w[../lib/clickatell/utility]) 
+]
 
-if File.exist?(local_lib)
-  require local_lib
+if File.exist?(local_libs.first)
+  local_libs.each { |lib| require lib }
 else
   require 'rubygems'
   require 'clickatell'
+  require 'clickatell/utility'
 end
 
-config_file = File.join(ENV['HOME'], '.clickatell')
+options = Clickatell::Utility::Options.parse(ARGV)
+connection = Clickatell::Connection.new(options.api_key, options.username, options.password)
 
-unless File.exist?(config_file)
-  puts "Please create a config file in ~/.clickatell"
-  exit 1
-end
-
-config = YAML.load(File.open(config_file))
-connection = Clickatell::Connection.new(config['api_key'], config['username'], config['password'])
-
-recipient = ARGV[0]
-message_text = ARGV[1]
-
-puts "Sending '#{message_text}' to #{recipient}."
-connection.send_message(recipient, message_text)
+puts "Sending '#{options.message}' to #{options.recipient}."
+connection.send_message(options.recipient, options.message)
 puts "Done."
 exit 0
