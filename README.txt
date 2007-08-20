@@ -1,8 +1,7 @@
 Clickatell Ruby Gem
-===============================================================================
 
 1. Basic Usage
--------------------------------------------------------------------------------
+
 To use this gem, you will need sign up for an account at www.clickatell.com. 
 Once you are registered and logged into your account centre, you should add 
 an HTTP API connection to your account. This will give you your API_ID.
@@ -22,7 +21,7 @@ account username and password.
 
   
 2. Command-line SMS Utility
--------------------------------------------------------------------------------
+
 The Clickatell gem also comes with a command-line utility that will allow you
 to send an SMS directly from the command-line. 
 
@@ -37,5 +36,3 @@ file called .clickatell that resembles the following:
 You can then use the sms utility to send a message to a single recipient:
 
   sms 447771234567 'Hello from clickatell'
-  
-===============================================================================
