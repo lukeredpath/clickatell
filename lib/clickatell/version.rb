@@ -5,5 +5,9 @@ module Clickatell #:nodoc:
     TINY  = 0
 
     STRING = [MAJOR, MINOR, TINY].join('.')
+    
+    def self.to_s
+      STRING
+    end
   end
 end
