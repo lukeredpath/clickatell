@@ -127,6 +127,16 @@ task :check_version do
   end
 end
 
+Rake::RDocTask.new('docs') do |rd|
+  rd.main = 'README.txt'
+  rd.rdoc_files.include('README.txt', 'License.txt', 'lib/**/*.rb')
+  rd.rdoc_dir = 'doc'
+  rd.options << '--style=http://clickatell.rubyforge.org/stylesheets/rdoc.css'
+  rd.options << '--tab-width=2'
+  rd.options << '--inline-source'
+  rd.options << '--line-numbers'
+end
+
 namespace :spec do
   desc "Run the specs under spec"
   Spec::Rake::SpecTask.new('all') do |t|
