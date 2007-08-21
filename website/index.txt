@@ -6,7 +6,7 @@ A Ruby interface to the "Clickatell":http://www.clickatell.com SMS gateway API.
 
 h3. Installing
 
-<p>Download the <a href="http://rubyforge.org/projects/clickatell">latest version of gem</a> or install using RubyGems</p>
+<p>Download the <a href="http://rubyforge.org/projects/clickatell">latest version of gem</a> or install using RubyGems.</p>
 
 <pre><code>$ sudo gem install clickatell</code></pre>
 
@@ -28,6 +28,8 @@ require 'clickatell'
 connection = Clickatell::Connection.new('your_api_id', 'your_username', 'your_password')
 connection.send_message('447771234567', 'Hello from clickatell')
 </code></pre>
+
+Full documentation for the API is available in the <a href="rdoc/">RDoc documentation</a>.
   
 h4. Command-line SMS Utility
 
