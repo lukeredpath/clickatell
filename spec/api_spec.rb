@@ -93,6 +93,24 @@ module Clickatell
       Response.should_receive(:parse).with(response).and_return('ID' => 'message_id', 'Status' => 'message_status')
       API.message_status('messageid', :session_id => 'abcde').should == 'message_status'
     end
+    
+    it "should support balance query with authentication, returning number of credits as a float" do
+      API.should_receive(:execute_command).with('getbalance',
+        :api_id => '1234',
+        :user => 'joebloggs',
+        :password => 'superpass'
+      ).and_return(response=mock('response'))
+      Response.should_receive(:parse).with(response).and_return('Credit' => '10.0')
+      API.account_balance(:username => 'joebloggs', :password => 'superpass', :api_key => '1234').should == 10.0
+    end
+    
+    it "should support balance query with pre-auth, returning number of credits as a float" do
+      API.should_receive(:execute_command).with('getbalance',
+        :session_id => 'abcde'
+      ).and_return(response=mock('response'))
+      Response.should_receive(:parse).with(response).and_return('Credit' => '10.0')
+      API.account_balance(:session_id => 'abcde').should == 10.0
+    end
   end
   
 end

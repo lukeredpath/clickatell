@@ -52,6 +52,13 @@ module Clickatell
         }.merge( auth_hash(auth_options) ))
         parse_response(response)['Status']
       end
+      
+      # Returns the number of credits remaining as a float. 
+      # See send_message() for auth_options.
+      def account_balance(auth_options)
+        response = execute_command('getbalance', auth_hash(auth_options))
+        parse_response(response)['Credit'].to_f
+      end
 
       protected
         # Builds a command and sends it via HTTP GET.
