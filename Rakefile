@@ -129,7 +129,7 @@ end
 
 Rake::RDocTask.new('docs') do |rd|
   rd.main = 'README.txt'
-  rd.rdoc_files.include('README.txt', 'License.txt', 'lib/**/*.rb')
+  rd.rdoc_files.include('README.txt', 'History.txt', 'License.txt', 'lib/**/*.rb')
   rd.rdoc_dir = 'doc'
   rd.options << '--style=http://clickatell.rubyforge.org/stylesheets/rdoc.css'
   rd.options << '--tab-width=2'
