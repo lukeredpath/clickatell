@@ -10,6 +10,9 @@ module Clickatell
       
       # Returns the HTTP response body data as a hash.
       def parse(http_response)
+        if http_response.body.scan(/ERR/).any?
+          raise Clickatell::API::Error.parse(http_response.body)
+        end
         YAML.load(http_response.body.scan(PARSE_REGEX).join("\n"))
       end
       

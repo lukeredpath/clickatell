@@ -24,7 +24,7 @@ module Clickatell
   end
   
   describe "Command executor" do
-    it "should create an API command and send it via HTTP get" do
+    it "should create an API command and send it via HTTP get, returning the raw http response" do
       API::Command.should_receive(:new).with('cmdname').and_return(cmd=mock('command'))
       cmd.should_receive(:with_params).with(:param_one => 'foo').and_return(uri=mock('uri'))
       Net::HTTP.should_receive(:get_response).with(uri).and_return(raw_response=mock('http response'))
@@ -110,6 +110,21 @@ module Clickatell
       ).and_return(response=mock('response'))
       Response.should_receive(:parse).with(response).and_return('Credit' => '10.0')
       API.account_balance(:session_id => 'abcde').should == 10.0
+    end
+    
+    it "should raise an API::Error if the response parser raises" do
+      API.stub!(:execute_command)
+      Response.stub!(:parse).and_raise(Clickatell::API::Error.new('', ''))
+      proc { API.account_balance({}) }.should raise_error(Clickatell::API::Error)
+    end
+  end
+  
+  describe "API Error" do
+    it "should parse http response string to create error" do
+      response_string = "ERR: 001, Authentication error"
+      error = Clickatell::API::Error.parse(response_string)
+      error.code.should == '001'
+      error.message.should == 'Authentication error'
     end
   end
   

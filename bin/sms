@@ -21,8 +21,19 @@ if options.show_balance
   puts "You have #{connection.account_balance} credits remaining."
   exit 0
 else
-  puts "Sending '#{options.message}' to #{options.recipient}."
-  connection.send_message(options.recipient, options.message)
-  puts "Done."
-  exit 0
+  begin
+    puts "Sending '#{options.message}' to #{options.recipient}..."
+    connection.send_message(options.recipient, options.message)
+    puts "Done."
+    exit 0
+  rescue Clickatell::API::Error => e
+    case e.code
+    when '001'
+      puts "Authentication failed. Please check your username, password and API key."
+      exit 1
+    else
+      puts "Unexpected error occurred. #{e.message} (error code: #{e.code})."
+      exit 1
+    end
+  end
 end
