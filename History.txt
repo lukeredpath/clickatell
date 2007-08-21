@@ -1,13 +1,9 @@
 == 0.2.0 
 
 * Added Clickatell API error handling to API and sms utility.
-
 * Handle required/optional arguments for sms utility correctly
-
 * Added further sms utility usage information to website
-
 * Make sure sms utility gracefully handles missing recipient/message
-
 * Added balance query support to API and SMS utility (--check-balance).
 
 == 0.1.0 2007-08-17
