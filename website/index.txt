@@ -29,7 +29,7 @@ connection = Clickatell::Connection.new('your_api_id', 'your_username', 'your_pa
 connection.send_message('447771234567', 'Hello from clickatell')
 </code></pre>
 
-Full documentation for the API is available in the <a href="rdoc/">RDoc documentation</a>.
+Full documentation for the API is available in the <a href="rdoc/">RDocs</a>.
   
 h4. Command-line SMS Utility
 
