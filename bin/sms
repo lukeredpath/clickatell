@@ -28,11 +28,18 @@ else
     exit 0
   rescue Clickatell::API::Error => e
     case e.code
-    when '001'
-      puts "Authentication failed. Please check your username, password and API key."
+    when '001', '002', '003', '005'
+      puts "Authentication failed. Please check your username, password and API key and try again."
+      exit 1
+    when '004'
+      puts "Your account has been frozen. Please contact Clickatell support."
+      exit 1
+    when '007'
+      puts "Requests for this API key are not permitted from this IP address."
       exit 1
     else
       puts "Unexpected error occurred. #{e.message} (error code: #{e.code})."
+      puts "Please contact the author (contact@lukeredpath.co.uk) with the above error."
       exit 1
     end
   end
