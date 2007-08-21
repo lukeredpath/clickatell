@@ -1,3 +1,7 @@
+== 0.2.0 
+
+* Added balance query support to API and SMS utility (--check-balance).
+
 == 0.1.0 2007-08-17
 
-* Initial release
+* Initial release.
