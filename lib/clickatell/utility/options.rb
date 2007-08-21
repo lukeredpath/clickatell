@@ -11,17 +11,17 @@ module Clickatell
           opts.separator ""
           opts.separator "Specific options:"
           
-          opts.on('-u', '--username [USERNAME]',
+          opts.on('-u', '--username USERNAME',
             "Specify the clickatell username (overrides ~/.clickatell setting)") do |username|
              options.username = username 
           end
           
-          opts.on('-p', '--password [PASSWORD]',
+          opts.on('-p', '--password PASSWORD',
             "Specify the clickatell password (overrides ~/.clickatell setting)") do |password|
              options.password = password
           end
           
-          opts.on('-k', '--apikey [API_KEY]',
+          opts.on('-k', '--apikey API_KEY',
             "Specify the clickatell API key (overrides ~/.clickatell setting)") do |key|
              options.api_key = key
           end
@@ -53,6 +53,12 @@ module Clickatell
         end
 
         return options
+        
+      rescue OptionParser::MissingArgument => e
+        switch_given = e.message.split(':').last.strip
+        puts "The #{switch_given} option requires an argument."
+        puts parser
+        exit
       end
       
       def self.default_options
