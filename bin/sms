@@ -16,7 +16,13 @@ end
 options = Clickatell::Utility::Options.parse(ARGV)
 connection = Clickatell::Connection.new(options.api_key, options.username, options.password)
 
-puts "Sending '#{options.message}' to #{options.recipient}."
-connection.send_message(options.recipient, options.message)
-puts "Done."
-exit 0
+if options.show_balance
+  puts "Retrieving account balance..."
+  puts "You have #{connection.account_balance} credits remaining."
+  exit 0
+else
+  puts "Sending '#{options.message}' to #{options.recipient}."
+  connection.send_message(options.recipient, options.message)
+  puts "Done."
+  exit 0
+end

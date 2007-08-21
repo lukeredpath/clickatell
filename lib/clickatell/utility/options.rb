@@ -26,6 +26,11 @@ module Clickatell
              options.api_key = key
           end
           
+          opts.on('-b', '--show-balance',
+             "Shows the total number of credits remaining on your account") do
+             options.show_balance = true
+          end
+          
           opts.on_tail('-h', '--help', "Show this message") do
             puts opts
             exit
@@ -41,7 +46,7 @@ module Clickatell
         options.recipient = ARGV[-2]
         options.message   = ARGV[-1]
         
-        if(options.message.nil? || options.recipient.nil?)
+        if (options.message.nil? || options.recipient.nil?) && !options.show_balance
           puts "You must specify a recipient and message!"
           puts parser
           exit
