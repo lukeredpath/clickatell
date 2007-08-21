@@ -10,6 +10,10 @@ h3. Installing
 
 <pre><code>$ sudo gem install clickatell</code></pre>
 
+Getting the latest version from Subversion:
+
+<pre><code>& svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
+
 h3. The basics
 
 To use this gem, you will need sign up for an account at "the Clickatell website":http://www.clickatell.com. 
