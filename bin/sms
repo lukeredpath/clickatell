@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'pp'
 
 local_libs = [
  File.join(File.dirname(__FILE__), *%w[../lib/clickatell]),

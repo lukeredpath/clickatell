@@ -7,7 +7,7 @@ module Clickatell
       def self.parse(args)
         options = self.default_options
         parser = OptionParser.new do |opts|
-          opts.banner = "Usage: sms [options] recipient_number message"
+          opts.banner = "Usage: sms [options] recipient message"
           opts.separator ""
           opts.separator "Specific options:"
           
@@ -40,6 +40,13 @@ module Clickatell
         parser.parse!(args)
         options.recipient = ARGV[-2]
         options.message   = ARGV[-1]
+        
+        if(options.message.nil? || options.recipient.nil?)
+          puts "You must specify a recipient and message!"
+          puts parser
+          exit
+        end
+
         return options
       end
       
