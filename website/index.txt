@@ -50,11 +50,27 @@ username: your_username
 password: your_password
 </code></pre>
 
-You can then use the sms utility to send a message to a single recipient:
+You can then use the +sms+ utility to send a message to a single recipient:
 
 <pre><code>
 $ sms 447771234567 'Hello from clickatell'
 </code></pre>
+
+Alternatively, you can specify your authentication details manually by passing in options to the +sms+ command.
+
+<pre><code>
+$ sms -u your_username -p your_password -k your_api_key 447771234567 'Hello from clickatell'
+</code></pre>
+
+These values will take presedence over any values in your ~/.clickatell file.
+
+You can also use the +sms+ utility to check your Clickatell account balance:
+
+<pre><code>
+$ sms --show-balance
+</code></pre>
+
+Run +sms+ without any arguments for a full list of options.
 
 h3. License
 
