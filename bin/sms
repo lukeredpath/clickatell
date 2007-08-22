@@ -21,6 +21,11 @@ begin
     puts "Retrieving account balance..."
     puts "You have #{connection.account_balance} credits remaining."
     exit 0
+  elsif options.show_status
+    puts "Getting status of message ##{options.message_id}."
+    status = connection.message_status(options.message_id)
+    puts "STATUS: #{status}."
+    exit 0
   else
     puts "Sending '#{options.message}' to #{options.recipient}..."
     msg_id = connection.send_message(options.recipient, options.message)
