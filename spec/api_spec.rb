@@ -4,21 +4,28 @@ require File.dirname(__FILE__) + '/../lib/clickatell'
 module Clickatell
   
   describe "API Command" do
+    before do
+      @command = API::Command.new('cmdname')
+    end
+    
     it "should return encoded URL for the specified command and parameters" do
-      command = API::Command.new('cmdname')
-      url = command.with_params(:param_one => 'abc', :param_two => '123')
+      url = @command.with_params(:param_one => 'abc', :param_two => '123')
       url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
     end
     
     it "should URL encode any special characters in parameters" do
-      command = API::Command.new('cmdname')
-      url = command.with_params(:param_one => 'abc', :param_two => 'hello world')
+      url = @command.with_params(:param_one => 'abc', :param_two => 'hello world')
       url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=hello%20world")
     end
+  end
+  
+  describe "Secure API Command" do
+    before do
+      @command = API::Command.new('cmdname', :secure => true)
+    end
     
-    it "should support non-secure api commands" do
-      command = API::Command.new('cmdname', :secure => true)
-      url = command.with_params(:param_one => 'abc', :param_two => '123')
+    it "should use HTTPS" do
+      url = @command.with_params(:param_one => 'abc', :param_two => '123')
       url.should == URI.parse("https://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
     end
   end
