@@ -23,8 +23,8 @@ begin
     exit 0
   else
     puts "Sending '#{options.message}' to #{options.recipient}..."
-    connection.send_message(options.recipient, options.message)
-    puts "Done."
+    msg_id = connection.send_message(options.recipient, options.message)
+    puts "Message sent successfully (message id: #{msg_id})."
     exit 0
   end
   
