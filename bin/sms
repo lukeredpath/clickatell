@@ -16,31 +16,32 @@ end
 options = Clickatell::Utility::Options.parse(ARGV)
 connection = Clickatell::Connection.new(options.api_key, options.username, options.password)
 
-if options.show_balance
-  puts "Retrieving account balance..."
-  puts "You have #{connection.account_balance} credits remaining."
-  exit 0
-else
-  begin
+begin
+  if options.show_balance
+    puts "Retrieving account balance..."
+    puts "You have #{connection.account_balance} credits remaining."
+    exit 0
+  else
     puts "Sending '#{options.message}' to #{options.recipient}..."
     connection.send_message(options.recipient, options.message)
     puts "Done."
     exit 0
-  rescue Clickatell::API::Error => e
-    case e.code
-    when '001', '002', '003', '005'
-      puts "Authentication failed. Please check your username, password and API key and try again."
-      exit 1
-    when '004'
-      puts "Your account has been frozen. Please contact Clickatell support."
-      exit 1
-    when '007'
-      puts "Requests for this API key are not permitted from this IP address."
-      exit 1
-    else
-      puts "Unexpected error occurred. #{e.message} (error code: #{e.code})."
-      puts "Please contact the author (contact@lukeredpath.co.uk) with the above error."
-      exit 1
-    end
+  end
+  
+rescue Clickatell::API::Error => e
+  case e.code
+  when '001', '002', '003', '005', '108'
+    puts "Authentication failed. Please check your username, password and API key and try again."
+    exit 1
+  when '004'
+    puts "Your account has been frozen. Please contact Clickatell support."
+    exit 1
+  when '007'
+    puts "Requests for this API key are not permitted from this IP address."
+    exit 1
+  else
+    puts "Unexpected error occurred. #{e.message} (error code: #{e.code})."
+    puts "Please contact the author (contact@lukeredpath.co.uk) with the above error."
+    exit 1
   end
 end
