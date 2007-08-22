@@ -1,5 +1,10 @@
 == 0.3.0
 
+* Added support for checking message status to sms utility
+* sms utility now returns the id of a successfully sent message.
+* Capture API KEY errors.
+* Make sure errors are handled when using sms utility to check balance.
+
 == 0.2.0 
 
 * Added Clickatell API error handling to API and sms utility.
