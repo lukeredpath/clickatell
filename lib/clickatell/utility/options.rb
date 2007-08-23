@@ -27,6 +27,11 @@ module Clickatell
               "Specify the clickatell API key (overrides ~/.clickatell setting)") do |key|
                @options.api_key = key
             end
+            
+            opts.on('-f', '--from NAME_OR_NUMBER',
+              "Specify the name or number that the SMS will appear from") do |from|
+               @options.from = from 
+            end
           
             opts.on('-b', '--show-balance',
                "Shows the total number of credits remaining on your account") do
@@ -76,6 +81,7 @@ module Clickatell
           options.username = config['username']
           options.password = config['password']
           options.api_key  = config['api_key']
+          options.from     = config['from']
           return options
         rescue Errno::ENOENT
           return options
