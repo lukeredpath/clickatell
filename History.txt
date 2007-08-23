@@ -1,5 +1,6 @@
 == 0.3.0
 
+* Added support for custom :from number/name when sending a message.
 * Added support for checking message status to sms utility
 * sms utility now returns the id of a successfully sent message.
 * Capture API KEY errors.
