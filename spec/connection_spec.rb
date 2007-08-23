@@ -13,12 +13,20 @@ module Clickatell
   end
   
   describe Connection, ' when authenticated' do
+    before do
+      @connection = Connection.new('my_api_key', 'myusername', 'mypassword')
+      @connection.stub!(:session_id).and_return('session_id')
+    end
+    
     it "should send command with session_id without re-authenticating" do
-      connection = Connection.new('my_api_key', 'myusername', 'mypassword')
-      connection.stub!(:session_id).and_return('session_id')
       API.should_receive(:authenticate).never
       API.should_receive(:send_message).with('4477791234567', 'hello world', :session_id => 'session_id')
-      connection.send_message('4477791234567', 'hello world')
+      @connection.send_message('4477791234567', 'hello world')
+    end
+    
+    it "should support API calls with additional opts, passing them after auth options" do
+      API.should_receive(:send_message).with('4477791234567', 'hello world', {:session_id => 'session_id'}, :from => 'LUKE')
+      @connection.send_message('4477791234567', 'hello world', {:from => 'LUKE'})
     end
   end
   

@@ -36,8 +36,9 @@ module Clickatell
     protected
       # Executes the given +api_method+ by delegating to the API 
       # module, using the current session_id for authentication.
-      def execute_api_call(api_method, params)
+      def execute_api_call(api_method, params, additional_options)
         params << {:session_id => current_session_id}
+        params << additional_options if additional_options
         API.send(api_method, *params)
       end
       
@@ -50,7 +51,8 @@ module Clickatell
       # Dispatch any API methods to the API module.
       def method_missing(method, *args, &block)
         if API.respond_to?(method)
-          execute_api_call(method, args)
+          additional_options = args.pop if args.last.is_a?(Hash)
+          execute_api_call(method, args, additional_options)
         else
           super(method, args, &block)
         end

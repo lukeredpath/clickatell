@@ -11,10 +11,12 @@ lib/clickatell/response.rb
 lib/clickatell/utility.rb
 lib/clickatell/utility/options.rb
 lib/clickatell/version.rb
+lib/core-ext/hash.rb
 scripts/txt2html
 setup.rb
 spec/api_spec.rb
 spec/connection_spec.rb
+spec/hash_ext_spec.rb
 spec/response_spec.rb
 spec/spec.opts
 spec/spec_helper.rb

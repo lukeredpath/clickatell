@@ -79,6 +79,28 @@ module Clickatell
       API.send_message('4477791234567', 'hello world', :session_id => 'abcde').should == 'message_id'
     end
     
+    it "should support sending messages with custom from number, returning the message id" do
+      API.should_receive(:execute_command).with('sendmsg',
+        :session_id => 'abcde',
+        :to => '4477791234567',
+        :text => 'hello world',
+        :from => 'LUKE'
+      ).and_return(response=mock('response'))
+      Response.should_receive(:parse).with(response).and_return('ID' => 'message_id')
+      API.send_message('4477791234567', 'hello world', {:session_id => 'abcde'}, :from => 'LUKE')
+    end
+    
+    it "should ignore any invalid parameters when sending message" do
+      API.should_receive(:execute_command).with('sendmsg',
+        :session_id => 'abcde',
+        :to => '4477791234567',
+        :text => 'hello world',
+        :from => 'LUKE'
+      ).and_return(response=mock('response'))
+      Response.stub!(:parse).and_return('ID' => 'foo')
+       API.send_message('4477791234567', 'hello world', {:session_id => 'abcde'}, :from => 'LUKE', :any_old_param => 'test')
+    end
+    
     it "should support message status query with authentication, returning message status" do
       API.should_receive(:execute_command).with('querymsg',
         :api_id => '1234',
@@ -91,7 +113,7 @@ module Clickatell
         :username => 'joebloggs', :password => 'superpass', :api_key => '1234'
       ).should == 'message_status'
     end
-    
+      
     it "should support message status query with pre-auth" do
       API.should_receive(:execute_command).with('querymsg',
         :session_id => 'abcde',

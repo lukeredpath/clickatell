@@ -35,11 +35,12 @@ module Clickatell
       # for an existing authenticated session.
       #
       # Returns a new message ID if successful.
-      def send_message(recipient, message_text, auth_options)
+      def send_message(recipient, message_text, auth_options, opts={})
+        valid_options = opts.only(:from)
         response = execute_command('sendmsg', {
           :to => recipient,
           :text => message_text
-        }.merge( auth_hash(auth_options) )) 
+        }.merge(auth_hash(auth_options)).merge(valid_options)) 
         parse_response(response)['ID']
       end
       
