@@ -7,7 +7,7 @@ class Hash
   #
   # Keys that do not exist in the original hash are ignored.
   def only(*keys)
-    self.inject({}) do |new_hash, (key, value)|
+    inject( {} ) do |new_hash, (key, value)|
       new_hash[key] = value if keys.include?(key)
       new_hash
     end
