@@ -1,5 +1,7 @@
 == 0.3.0
 
+* Display proper message status, not just the code
+* Make it possible to specify custom :from number/name using SMS utility
 * Added support for custom :from number/name when sending a message.
 * Added support for checking message status to sms utility
 * sms utility now returns the id of a successfully sent message.
