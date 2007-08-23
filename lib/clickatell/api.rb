@@ -1,7 +1,7 @@
 require 'net/http'
 
 module Clickatell
-  # This module provides the core implementation of the Clickatell 
+  # This module provides the core implementation of the Clickatell
   # HTTP service.
   module API
     
@@ -18,7 +18,7 @@ module Clickatell
         )
         parse_response(response)['OK']
       end
-      
+
       # Pings the service with the specified session_id to keep the
       # session alive.
       def ping(session_id)

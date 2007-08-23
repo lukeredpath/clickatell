@@ -51,4 +51,9 @@ rescue Clickatell::API::Error => e
     puts "Please contact the author (contact@lukeredpath.co.uk) with the above error."
     exit 1
   end
+  
+rescue Timeout::Error
+  puts "The connection the the Clickatell service timed out"
+  puts "Please check your network settings and try again."
+  exit 1
 end
