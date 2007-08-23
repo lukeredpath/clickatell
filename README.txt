@@ -34,3 +34,7 @@ file called .clickatell that resembles the following:
 You can then use the sms utility to send a message to a single recipient:
 
   sms 447771234567 'Hello from clickatell'
+  
+Run +sms+ without any arguments for a full list of options.
+
+See http://clickatell.rubyforge.org for further instructions.

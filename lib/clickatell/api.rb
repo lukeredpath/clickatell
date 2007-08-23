@@ -30,9 +30,12 @@ module Clickatell
       # no leading zeros (unless you have set a default prefix
       # in your clickatell account centre).
       #
-      # +auth_options+: a hash of credentials to be used in this
+      # Takes a hash of auth_options to be used in this
       # API call. Either api_id/username/password or session_id
       # for an existing authenticated session.
+      #
+      # Additional options:
+      #    :from - the from number/name
       #
       # Returns a new message ID if successful.
       def send_message(recipient, message_text, auth_options, opts={})

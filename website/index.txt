@@ -64,11 +64,27 @@ $ sms -u your_username -p your_password -k your_api_key 447771234567 'Hello from
 
 These values will take presedence over any values in your ~/.clickatell file.
 
+You can also specify the name or number that will appear in the "From" label on the recipients phone. You can either add a "from" key to your .clickatell file or manually using the --from option:
+
+<pre><code>
+$ sms --from 'Luke Redpath' 447771234567 'Hello from clickatell'
+</code></pre>
+
+The "from" option can either be a 16 digit number or an 11 character alpha-numeric string.
+
 You can also use the +sms+ utility to check your Clickatell account balance:
 
 <pre><code>
 $ sms --show-balance
 </code></pre>
+
+Whenever you send a message with the +sms+ utility, it will return an alpha-numeric message ID. You can use this message ID to retrieve the message's current status using the --status option:
+
+<pre><code>
+$ sms --status 30b7d15bffb38695ba26e77c9c20f4ec
+</code></pre>
+
+This will return a message status and message status code.
 
 Run +sms+ without any arguments for a full list of options.
 
