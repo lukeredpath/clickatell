@@ -24,7 +24,7 @@ begin
   elsif options.show_status
     puts "Getting status of message ##{options.message_id}."
     status = connection.message_status(options.message_id)
-    puts "STATUS: #{status}."
+    puts "Status: #{Clickatell::API::MessageStatus[status]} (##{status})."
     exit 0
   else
     puts "Sending '#{options.message}' to #{options.recipient}..."
