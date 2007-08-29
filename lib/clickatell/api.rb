@@ -1,5 +1,3 @@
-require 'net/http'
-
 module Clickatell
   # This module provides the core implementation of the Clickatell
   # HTTP service.
@@ -95,88 +93,14 @@ module Clickatell
         end
       end
     
-    # Represents a Clickatell HTTP gateway command in the form 
-    # of a complete URL (the raw, low-level request).
-    class Command
-      API_SERVICE_HOST = 'api.clickatell.com'
-
-      def initialize(command_name, opts={})
-        @command_name = command_name
-        @options = { :secure => false }.merge(opts)
-      end
-      
-      # Returns a URL for the given parameters (a hash).
-      def with_params(param_hash)
-        param_string = '?' + param_hash.map { |key, value| "#{key}=#{value}" }.sort.join('&')
-        return URI.parse(File.join(api_service_uri, @command_name + URI.encode(param_string)))
-      end
-
-      protected
-        def api_service_uri
-          protocol = @options[:secure] ? 'https' : 'http'
-          return "#{protocol}://#{API_SERVICE_HOST}/http/"
-        end
-    end
-    
-    # Used to run commands agains the Clickatell gateway.
-    class CommandExecutor
-      def initialize(authentication_hash)
-        @authentication_hash = authentication_hash
-      end
-      
-      # Builds a command object and sends it using HTTP GET.
-      def execute(command_name, parameters={})
-        Net::HTTP.get_response(command(command_name, parameters))
-      end
-      
-      protected
-        def command(command_name, parameters) #:nodoc:
-          Command.new(command_name).with_params(
-            parameters.merge(@authentication_hash)
-          )
-        end
-    end
-    
-    # Clickatell API Error exception.
-    class Error < StandardError
-      attr_reader :code, :message
-      
-      def initialize(code, message)
-        @code, @message = code, message
-      end
-      
-      # Creates a new Error from a Clickatell HTTP response string
-      # e.g.:
-      #
-      #  Error.parse("ERR: 001, Authentication error")
-      #  # =>  #<Clickatell::API::Error code='001' message='Authentication error'>
-      def self.parse(error_string)
-        error_details = error_string.split(':').last.strip
-        code, message = error_details.split(',').map { |s| s.strip }
-        self.new(code, message)
-      end
-    end
-    
-    class MessageStatus
-      STATUS_MAP = {
-        1  => 'Message unknown',
-        2  => 'Message queued',
-        3  => 'Delivered to gateway',
-        4  => 'Received by recipient',
-        5  => 'Error with message',
-        6  => 'User cancelled messaged delivery',
-        7  => 'Error delivering message',
-        8  => 'OK',
-        9  => 'Routing error',
-        10 => 'Message expired',
-        11 => 'Message queued for later delivery',
-        12 => 'Out of credit'
-      }
-      
-      def self.[](code)
-        STATUS_MAP[code]
-      end
-    end
-    
   end
+end
+
+%w( api/command
+    api/command_executor
+    api/error
+    api/message_status
+    
+).each do |lib|
+    require File.join(File.dirname(__FILE__), lib)
 end
