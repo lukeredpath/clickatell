@@ -14,23 +14,23 @@ else
 end
 
 options = Clickatell::Utility::Options.parse(ARGV)
-connection = Clickatell::Connection.new(options.api_key, options.username, options.password)
+api = Clickatell::API.authenticate(options.api_key, options.username, options.password)
 
 begin
   if options.show_balance
     puts "Retrieving account balance..."
-    puts "You have #{connection.account_balance} credits remaining."
+    puts "You have #{api.account_balance} credits remaining."
     exit 0
   elsif options.show_status
     puts "Getting status of message ##{options.message_id}."
-    status = connection.message_status(options.message_id)
+    status = api.message_status(options.message_id)
     puts "Status: #{Clickatell::API::MessageStatus[status]} (##{status})."
     exit 0
   else
     puts "Sending '#{options.message}' to #{options.recipient}..."
     additional_opts = {}
     additional_opts[:from] = options.from if options.from
-    msg_id = connection.send_message(options.recipient, options.message, additional_opts)
+    msg_id = api.send_message(options.recipient, options.message, additional_opts)
     puts "Message sent successfully (message id: #{msg_id})."
     exit 0
   end
