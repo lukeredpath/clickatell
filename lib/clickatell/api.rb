@@ -15,6 +15,7 @@ module Clickatell
         api
       end
       
+      # Set to true to enable debugging (off by default)
       attr_accessor :debug_mode
     end
     

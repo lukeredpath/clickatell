@@ -10,7 +10,9 @@ module Clickatell
         @debug = debug
       end
       
-      # Builds a command object and sends it using HTTP GET.
+      # Builds a command object and sends it using HTTP GET. 
+      # Will output URLs as they are requested to stdout when 
+      # debugging is enabled.
       def execute(command_name, parameters={})
         request_uri = command(command_name, parameters)
         puts "[debug] Sending request to #{request_uri}" if @debug
