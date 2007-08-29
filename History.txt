@@ -1,5 +1,6 @@
 == 0.4.0
 
+* Refactored command execution into a separate object (CommandExecutor).
 * Major refactoring of API module - converted it to a class with API methods
 implemented as instance methods. Code is much cleaner and Connection class 
 becomes redundant. See updated documentation.

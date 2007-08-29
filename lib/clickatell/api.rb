@@ -77,11 +77,8 @@ module Clickatell
     end
 
     protected
-      # Builds a command and sends it via HTTP GET.
-      def execute_command(command_name, parameters)
-        Net::HTTP.get_response(
-          Command.new(command_name).with_params(parameters.merge(auth_hash))
-        )
+      def execute_command(command_name, parameters={}) #:nodoc:
+        CommandExecutor.new(auth_hash).execute(command_name, parameters)
       end
 
       def parse_response(raw_response) #:nodoc:
@@ -118,6 +115,25 @@ module Clickatell
         def api_service_uri
           protocol = @options[:secure] ? 'https' : 'http'
           return "#{protocol}://#{API_SERVICE_HOST}/http/"
+        end
+    end
+    
+    # Used to run commands agains the Clickatell gateway.
+    class CommandExecutor
+      def initialize(authentication_hash)
+        @authentication_hash = authentication_hash
+      end
+      
+      # Builds a command object and sends it using HTTP GET.
+      def execute(command_name, parameters={})
+        Net::HTTP.get_response(command(command_name, parameters))
+      end
+      
+      protected
+        def command(command_name, parameters) #:nodoc:
+          Command.new(command_name).with_params(
+            parameters.merge(@authentication_hash)
+          )
         end
     end
     
