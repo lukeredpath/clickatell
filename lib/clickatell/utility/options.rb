@@ -43,6 +43,10 @@ module Clickatell
                @options.message_id = message_id
                @options.show_status = true  
             end
+            
+            opts.on('-d', '--debug') do
+               @options.debugging_enabled = true
+            end
           
             opts.on_tail('-h', '--help', "Show this message") do
               puts opts
