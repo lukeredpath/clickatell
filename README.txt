@@ -10,12 +10,8 @@ account username and password.
   require 'rubygems'
   require 'clickatell'
   
-  connection = Clickatell::Connection.new(
-    'your_api_id',
-    'your_username',
-    'your_password'
-  )
-  connection.send_message('447771234567', 'Hello from clickatell')
+  api = Clickatell::API.authenticate('your_api_id', 'your_username', 'your_password')
+  api.send_message('447771234567', 'Hello from clickatell')
 
   
 == Command-line SMS Utility

@@ -23,7 +23,7 @@ module Clickatell
     # :username, :password and :api_key.
     #
     # Some API calls (authenticate, ping etc.) do not require any 
-    # auth_options.
+    # +auth_options+. +auth_options+ can be updated using the accessor methods.
     def initialize(auth_options={})
       @auth_options = auth_options
     end
