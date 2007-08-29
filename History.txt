@@ -3,9 +3,7 @@
 * Added API debug mode and --debug option to sms utility
 * Restructured API classes into individual files
 * Refactored command execution into a separate object (CommandExecutor).
-* Major refactoring of API module - converted it to a class with API methods
-implemented as instance methods. Code is much cleaner and Connection class 
-becomes redundant. See updated documentation.
+* Major refactoring of API module - converted it to a class with API methods implemented as instance methods. Code is much cleaner and Connection class becomes redundant. See updated documentation.
 
 == 0.3.0
 
