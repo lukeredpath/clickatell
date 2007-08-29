@@ -14,6 +14,8 @@ module Clickatell
         api.auth_options = { :session_id => session_id }
         api
       end
+      
+      attr_accessor :debug_mode
     end
     
     # Creates a new API instance using the specified +auth options+.
@@ -76,7 +78,7 @@ module Clickatell
 
     protected
       def execute_command(command_name, parameters={}) #:nodoc:
-        CommandExecutor.new(auth_hash).execute(command_name, parameters)
+        CommandExecutor.new(auth_hash, self.class.debug_mode).execute(command_name, parameters)
       end
 
       def parse_response(raw_response) #:nodoc:
@@ -84,12 +86,14 @@ module Clickatell
       end
       
       def auth_hash #:nodoc:
-        @authentication_hash ||= if @auth_options[:session_id]
+        if @auth_options[:session_id]
           { :session_id => @auth_options[:session_id] }
-        else
+        elsif @auth_options[:api_id]
           { :user => @auth_options[:username],
             :password => @auth_options[:password],
             :api_id => @auth_options[:api_key] }
+        else
+          {}
         end
       end
     

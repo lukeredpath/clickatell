@@ -13,6 +13,8 @@ else
   require 'clickatell/utility'
 end
 
+Clickatell::API.debug_mode = ENV['DEBUG'] || false
+
 options = Clickatell::Utility::Options.parse(ARGV)
 api = Clickatell::API.authenticate(options.api_key, options.username, options.password)
 

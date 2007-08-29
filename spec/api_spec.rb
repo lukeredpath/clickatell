@@ -42,9 +42,8 @@ module Clickatell
   
   describe "API" do
     before do
-      API::CommandExecutor.should_receive(:new).with(
-        :session_id => '1234'
-      ).and_return(@executor = mock('command executor'))
+      API.debug_mode = false
+      API::CommandExecutor.should_receive(:new).with({:session_id => '1234'}, false).and_return(@executor = mock('command executor'))
       @api = API.new(:session_id => '1234')
     end
     
@@ -119,6 +118,16 @@ module Clickatell
       api.should_receive(:authenticate).with('my_api_key', 'joebloggs', 'mypassword').and_return('new_session_id')
       api.should_receive(:auth_options=).with(:session_id => 'new_session_id')
       API.authenticate('my_api_key', 'joebloggs', 'mypassword')
+    end
+  end
+  
+  describe API, ' with no authentication options set' do
+    it "should build commands with no authentication options" do
+      API.debug_mode = false
+      api = API.new
+      API::CommandExecutor.should_receive(:new).with({}, false).and_return(executor=mock('command executor'))
+      executor.stub!(:execute)
+      api.ping('1234')
     end
   end
   
