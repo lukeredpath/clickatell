@@ -6,7 +6,10 @@ Rakefile
 bin/sms
 lib/clickatell.rb
 lib/clickatell/api.rb
-lib/clickatell/connection.rb
+lib/clickatell/api/command.rb
+lib/clickatell/api/command_executor.rb
+lib/clickatell/api/error.rb
+lib/clickatell/api/message_status.rb
 lib/clickatell/response.rb
 lib/clickatell/utility.rb
 lib/clickatell/utility/options.rb
@@ -15,7 +18,6 @@ lib/core-ext/hash.rb
 scripts/txt2html
 setup.rb
 spec/api_spec.rb
-spec/connection_spec.rb
 spec/hash_ext_spec.rb
 spec/response_spec.rb
 spec/spec.opts
