@@ -36,3 +36,4 @@ Run +sms+ without any arguments for a full list of options.
 See http://clickatell.rubyforge.org for further instructions.  
  
  
+ 
