@@ -34,3 +34,4 @@ You can then use the sms utility to send a message to a single recipient:
 Run +sms+ without any arguments for a full list of options.
 
 See http://clickatell.rubyforge.org for further instructions.  
+ 
