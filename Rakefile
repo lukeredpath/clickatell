@@ -149,6 +149,12 @@ namespace :spec do
     t.spec_opts = ['--format', "specdoc"]
     t.spec_files = FileList['spec/*_spec.rb']
   end
+  
+  desc "Run the specs in HTML format"
+  Spec::Rake::SpecTask.new('html') do |t|
+    t.spec_opts = ['--format', "html"]
+    t.spec_files = FileList['spec/*_spec.rb']
+  end
 end
 
 desc "Default task is to run specs"
