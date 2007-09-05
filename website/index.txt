@@ -12,7 +12,7 @@ h3. Installing
 
 Getting the latest version from Subversion:
 
-<pre><code>& svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
+<pre><code>$ svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
 
 You can view the <a href="/rdoc">RDoc documentation</a> and the <a href="/specs.html">code specs</a>.
 
