@@ -14,6 +14,8 @@ Getting the latest version from Subversion:
 
 <pre><code>& svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
 
+You can view the <a href="/rdoc">RDoc documentation</a> and the <a href="/specs.html">code specs</a>.
+
 h3. The basics
 
 To use this gem, you will need sign up for an account at "the Clickatell website":http://www.clickatell.com. 

@@ -91,6 +91,7 @@ task :website_generate do
   Dir['website/**/*.txt'].each do |txt|
     sh %{ ruby scripts/txt2html #{txt} > #{txt.gsub(/txt$/,'html')} }
   end
+  sh "rake -s spec:html > website/specs.html"
 end
 
 desc 'Upload website files to rubyforge'
