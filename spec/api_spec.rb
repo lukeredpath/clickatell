@@ -33,9 +33,25 @@ module Clickatell
   describe "Command executor" do
     it "should create an API command with auth params and send it via HTTP get, returning the raw http response" do
       executor = API::CommandExecutor.new(:session_id => '12345')
-      API::Command.should_receive(:new).with('cmdname').and_return(cmd=mock('command'))
-      cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri=mock('uri'))
-      Net::HTTP.should_receive(:get_response).with(uri).and_return(raw_response=mock('http response'))
+      API::Command.should_receive(:new).with('cmdname', :secure => false).and_return(cmd=mock('command'))
+      uri = stub('uri', :host => 'example.com', :port => 80, :scheme => 'http', :path => '/foo/bar', :query => 'a=b')
+      cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
+      Net::HTTP.should_receive(:new).with('example.com', 80).and_return(transport=mock('http'))
+      transport.should_receive(:use_ssl=).with(false)
+      transport.should_receive(:start).and_yield(yielded_transport=mock('http'))
+      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return(raw_response=mock('http response'))
+      executor.execute('cmdname', :param_one => 'foo').should == raw_response
+    end
+    
+    it "should create a secure API command and send command using HTTPS if secure is true" do
+      executor = API::CommandExecutor.new({:session_id => '12345'}, secure=true)
+      API::Command.should_receive(:new).with('cmdname', :secure => true).and_return(cmd=mock('command'))
+      uri = stub('uri', :host => 'example.com', :port => 443, :scheme => 'https', :path => '/foo/bar', :query => 'a=b')
+      cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
+      Net::HTTP.should_receive(:new).with('example.com', 443).and_return(transport=mock('http'))
+      transport.should_receive(:use_ssl=).with(true)
+      transport.should_receive(:start).and_yield(yielded_transport=mock('http'))
+      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return(raw_response=mock('http response'))
       executor.execute('cmdname', :param_one => 'foo').should == raw_response
     end
   end
@@ -43,7 +59,8 @@ module Clickatell
   describe "API" do
     before do
       API.debug_mode = false
-      API::CommandExecutor.should_receive(:new).with({:session_id => '1234'}, false).and_return(@executor = mock('command executor'))
+      API.secure_mode = false
+      API::CommandExecutor.should_receive(:new).with({:session_id => '1234'}, false, false).and_return(@executor = mock('command executor'))
       @api = API.new(:session_id => '1234')
     end
     
@@ -124,8 +141,20 @@ module Clickatell
   describe API, ' with no authentication options set' do
     it "should build commands with no authentication options" do
       API.debug_mode = false
+      API.secure_mode = false
       api = API.new
-      API::CommandExecutor.should_receive(:new).with({}, false).and_return(executor=mock('command executor'))
+      API::CommandExecutor.should_receive(:new).with({}, false, false).and_return(executor=mock('command executor'))
+      executor.stub!(:execute)
+      api.ping('1234')
+    end
+  end
+  
+  describe API, ' in secure mode' do
+    it "should execute commands securely" do
+      API.debug_mode = false
+      API.secure_mode = true
+      api = API.new
+      API::CommandExecutor.should_receive(:new).with({}, true, false).and_return(executor=mock('command executor'))
       executor.stub!(:execute)
       api.ping('1234')
     end

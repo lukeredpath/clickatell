@@ -16,9 +16,6 @@ end
 # parse command line options
 options = Clickatell::Utility::Options.parse(ARGV)
 
-# enable debugging if specified
-Clickatell::API.debug_mode = true if options.debugging_enabled
-
 # authenticate and load the API
 api = Clickatell::API.authenticate(options.api_key, options.username, options.password)
 

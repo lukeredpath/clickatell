@@ -20,7 +20,8 @@ module Clickatell
       protected
         def api_service_uri
           protocol = @options[:secure] ? 'https' : 'http'
-          return "#{protocol}://#{API_SERVICE_HOST}/http/"
+          port = @options[:secure] ? 443 : 80
+          return "#{protocol}://#{API_SERVICE_HOST}:#{port}/http/"
         end
     end
     

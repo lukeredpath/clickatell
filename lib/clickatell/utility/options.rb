@@ -44,8 +44,13 @@ module Clickatell
                @options.show_status = true  
             end
             
+            opts.on('-S', '--secure',
+                "Sends request using HTTPS") do
+                Clickatell::API.secure_mode = true
+              end
+            
             opts.on('-d', '--debug') do
-               @options.debugging_enabled = true
+               Clickatell::API.debug_mode = true
             end
           
             opts.on_tail('-h', '--help', "Show this message") do

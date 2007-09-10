@@ -17,6 +17,9 @@ module Clickatell
       
       # Set to true to enable debugging (off by default)
       attr_accessor :debug_mode
+      
+      # Enable secure mode (SSL)
+      attr_accessor :secure_mode
     end
     
     # Creates a new API instance using the specified +auth options+.
@@ -79,7 +82,7 @@ module Clickatell
 
     protected
       def execute_command(command_name, parameters={}) #:nodoc:
-        CommandExecutor.new(auth_hash, self.class.debug_mode).execute(command_name, parameters)
+        CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode).execute(command_name, parameters)
       end
 
       def parse_response(raw_response) #:nodoc:
