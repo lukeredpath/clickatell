@@ -6,6 +6,8 @@ A Ruby interface to the "Clickatell":http://www.clickatell.com SMS gateway API.
 
 h3. Installing
 
+<p><strong>Please note:</strong> this gem has been tested on *nix based systems including Linux, BSD and OSX. The <code>sms</code> utility was written with these systems in mind and will not work out of the box on Windows. The API should still work but has not been tested at this time. If you would like Windows support, please submit patches.</p>
+
 <p>Download the <a href="http://rubyforge.org/projects/clickatell">latest version of gem</a> or install using RubyGems.</p>
 
 <pre><code>$ sudo gem install clickatell</code></pre>
