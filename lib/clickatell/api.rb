@@ -61,6 +61,7 @@ module Clickatell
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
       valid_options = opts.only(:from)
+      valid_options.merge!(:req_feat => '48') if valid_options[:from]
       response = execute_command('sendmsg',
         {:to => recipient, :text => message_text}.merge(valid_options)
       ) 

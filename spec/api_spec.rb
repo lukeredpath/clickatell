@@ -88,11 +88,12 @@ module Clickatell
       @api.send_message('4477791234567', 'hello world').should == 'message_id'
     end
     
-    it "should support sending messages with custom from number, returning the message id" do
+    it "should support sending messages with custom sender, passing the appropriate feature mask, returning the message id" do
       @executor.should_receive(:execute).with('sendmsg',
         :to => '4477791234567',
         :text => 'hello world',
-        :from => 'LUKE'
+        :from => 'LUKE',
+        :req_feat => '48'
       ).and_return(response=mock('response'))
       Response.should_receive(:parse).with(response).and_return('ID' => 'message_id')
       @api.send_message('4477791234567', 'hello world', :from => 'LUKE')
@@ -102,7 +103,8 @@ module Clickatell
       @executor.should_receive(:execute).with('sendmsg',
         :to => '4477791234567',
         :text => 'hello world',
-        :from => 'LUKE'
+        :from => 'LUKE',
+        :req_feat => '48'
       ).and_return(response=mock('response'))
       Response.stub!(:parse).and_return('ID' => 'foo')
       @api.send_message('4477791234567', 'hello world', :from => 'LUKE', :any_old_param => 'test')
