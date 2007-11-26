@@ -1,3 +1,6 @@
+== 0.4.1
+* Custom alphanumeric sender would not always be supported by default unless it was explicitly enabled using the req_feat parameter.
+
 == 0.4.0
 
 * Added API debug mode and --debug option to sms utility

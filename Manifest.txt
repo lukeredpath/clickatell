@@ -28,6 +28,7 @@ website/index.txt
 website/javascripts/codehighlighter/code_highlighter.js
 website/javascripts/codehighlighter/ruby.js
 website/javascripts/rounded_corners_lite.inc.js
+website/specs.html
 website/stylesheets/limechoc.css
 website/stylesheets/rdoc.css
 website/stylesheets/screen.css
