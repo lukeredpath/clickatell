@@ -38,8 +38,9 @@ module Clickatell
       cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
       Net::HTTP.should_receive(:new).with('example.com', 80).and_return(transport=mock('http'))
       transport.should_receive(:use_ssl=).with(false)
-      transport.should_receive(:start).and_yield(yielded_transport=mock('http'))
-      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return(raw_response=mock('http response'))
+      yielded_transport=mock('http')
+      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return([raw_response=mock('http_response'), body = stub('body')])
+      transport.should_receive(:start).and_yield(yielded_transport).and_return([raw_response, body])
       executor.execute('cmdname', :param_one => 'foo').should == raw_response
     end
     
@@ -50,8 +51,9 @@ module Clickatell
       cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
       Net::HTTP.should_receive(:new).with('example.com', 443).and_return(transport=mock('http'))
       transport.should_receive(:use_ssl=).with(true)
-      transport.should_receive(:start).and_yield(yielded_transport=mock('http'))
-      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return(raw_response=mock('http response'))
+      yielded_transport=mock('http')
+      yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return([raw_response=mock('http_response'), body = stub('body')])
+      transport.should_receive(:start).and_yield(yielded_transport).and_return([raw_response, body])
       executor.execute('cmdname', :param_one => 'foo').should == raw_response
     end
   end
