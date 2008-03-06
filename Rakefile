@@ -153,8 +153,8 @@ namespace :spec do
   
   desc "Run the specs in HTML format"
   Spec::Rake::SpecTask.new('html') do |t|
-    t.spec_opts = ['--format', "html"]
     t.spec_files = FileList['spec/*_spec.rb']
+    t.spec_opts = ['--format', "html:website/specs.html"]
   end
 end
 
