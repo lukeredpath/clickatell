@@ -12,7 +12,13 @@ h3. Installing
 
 <pre><code>$ sudo gem install clickatell</code></pre>
 
-Getting the latest version from Subversion:
+h4. Clickatell on GitHub
+
+The source repository for clickatell has been <a href="http://github.com/lukeredpath/clickatell/">moved to GitHub</a>.
+
+<pre><code>git clone git://github.com/lukeredpath/clickatell.git</code></pre>
+
+You can still access the old subversion repository although this is unlikely to be updated:
 
 <pre><code>$ svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
 
