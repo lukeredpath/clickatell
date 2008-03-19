@@ -12,13 +12,7 @@ h3. Installing
 
 <pre><code>$ sudo gem install clickatell</code></pre>
 
-h4. Clickatell on GitHub
-
-The source repository for clickatell has been <a href="http://github.com/lukeredpath/clickatell/">moved to GitHub</a>.
-
-<pre><code>git clone git://github.com/lukeredpath/clickatell.git</code></pre>
-
-You can still access the old subversion repository although this is unlikely to be updated:
+Getting the latest version from Subversion:
 
 <pre><code>$ svn co svn://lukeredpath.co.uk/var/svn/opensource/clickatell/trunk clickatell-trunk</code></pre>
 
@@ -80,13 +74,17 @@ $ sms -u your_username -p your_password -k your_api_key 447771234567 'Hello from
 
 These values will take presedence over any values in your ~/.clickatell file.
 
-You can also specify the name or number that will appear in the "From" label on the recipients phone. You can either add a "from" key to your .clickatell file or manually using the --from option:
+You can also specify a custom Sender ID - the name or number that will appear in the "From" label on the recipients phone. You can either add a "from" key to your .clickatell file or manually using the --from option:
 
 <pre><code>
 $ sms --from 'Luke Redpath' 447771234567 'Hello from clickatell'
 </code></pre>
 
 The "from" option can either be a 16 digit number or an 11 character alpha-numeric string.
+
+<strong>Important note about custom sender IDs:</strong> Since November 2007, Clickatell have implemented a policy whereby all Sender IDs must be registered in your account centre before they can be used (the mobile number that you signed up with will have automatically been registered). If you try to specify a custom sender ID that has not been registered, the SMS will not be delivered. 
+
+In addition, if you do not specify a sender ID, a default Clickatell number will be used instead. If you are using the sms utility to send messages from your own number, make sure you have added the 'from' field to your .clickatell file otherwise you will need to specify it every time you send a message.
 
 You can also use the +sms+ utility to check your Clickatell account balance:
 
