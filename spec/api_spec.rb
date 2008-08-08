@@ -108,6 +108,16 @@ module Clickatell
       @api.send_message('4477791234567', 'hello world', :from => 'LUKE')
     end
     
+    it "should support sending messages with mobile originated set, returning the message id" do
+      @executor.should_receive(:execute).with('sendmsg',
+        :to => '4477791234567',
+        :text => 'hello world',
+        :mo => '1'
+      ).and_return(response=mock('response'))
+      Response.should_receive(:parse).with(response).and_return('ID' => 'message_id')
+      @api.send_message('4477791234567', 'hello world', :mo => true)
+    end
+    
     it "should ignore any invalid parameters when sending message" do
       @executor.expects(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',

@@ -57,11 +57,13 @@ module Clickatell
     #
     # Additional options:
     #    :from - the from number/name
+    #    :mo   - mobile originated flag
     #
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
-      valid_options = opts.only(:from)
+      valid_options = opts.only(:from, :mo)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
+      valid_options[:mo] = '1' if valid_options.delete(:mo)
       response = execute_command('sendmsg', 'http',
         {:to => recipient, :text => message_text}.merge(valid_options)
       ) 
