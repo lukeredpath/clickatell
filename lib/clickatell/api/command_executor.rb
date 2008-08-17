@@ -15,15 +15,15 @@ module Clickatell
       # Builds a command object and sends it using HTTP GET. 
       # Will output URLs as they are requested to stdout when 
       # debugging is enabled.
-      def execute(command_name, parameters={})
-        request_uri = command(command_name, parameters)
+      def execute(command_name, service, parameters={})
+        request_uri = command(command_name, service, parameters)
         puts "[debug] Sending request to #{request_uri}" if @debug
         get_response(request_uri).first
       end
       
       protected
-        def command(command_name, parameters) #:nodoc:
-          Command.new(command_name, :secure => @secure).with_params(
+        def command(command_name, service, parameters) #:nodoc:
+          Command.new(command_name, service, :secure => @secure).with_params(
             parameters.merge(@authentication_hash)
           )
         end

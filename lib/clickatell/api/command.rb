@@ -6,8 +6,9 @@ module Clickatell
     class Command
       API_SERVICE_HOST = 'api.clickatell.com'
 
-      def initialize(command_name, opts={})
+      def initialize(command_name, service, opts={})
         @command_name = command_name
+        @service = service
         @options = { :secure => false }.merge(opts)
       end
   
@@ -21,7 +22,7 @@ module Clickatell
         def api_service_uri
           protocol = @options[:secure] ? 'https' : 'http'
           port = @options[:secure] ? 443 : 80
-          return "#{protocol}://#{API_SERVICE_HOST}:#{port}/http/"
+          return "#{protocol}://#{API_SERVICE_HOST}:#{port}/#{@service}/"
         end
     end
     

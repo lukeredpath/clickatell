@@ -36,7 +36,7 @@ module Clickatell
     # a session_id if successful which can be used in subsequent
     # API calls.
     def authenticate(api_id, username, password)
-      response = execute_command('auth',
+      response = execute_command('auth', 'http',
         :api_id => api_id,
         :user => username,
         :password => password
@@ -47,7 +47,7 @@ module Clickatell
     # Pings the service with the specified session_id to keep the
     # session alive.
     def ping(session_id)
-      execute_command('ping', :session_id => session_id)
+      execute_command('ping', 'http', :session_id => session_id)
     end
     
     # Sends a message +message_text+ to +recipient+. Recipient
@@ -62,28 +62,37 @@ module Clickatell
     def send_message(recipient, message_text, opts={})
       valid_options = opts.only(:from)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
-      response = execute_command('sendmsg',
+      response = execute_command('sendmsg', 'http',
         {:to => recipient, :text => message_text}.merge(valid_options)
       ) 
+      parse_response(response)['ID']
+    end
+
+    def send_wap_push(recipient, media_url, notification_text='', opts={})
+      valid_options = opts.only(:from)
+      valid_options.merge!(:req_feat => '48') if valid_options[:from]
+      response = execute_command('si_push', 'mms',
+        {:to => recipient, :si_url => media_url, :si_text => notification_text, :si_id => 'foo'}.merge(valid_options)
+      )
       parse_response(response)['ID']
     end
     
     # Returns the status of a message. Use message ID returned
     # from original send_message call.
     def message_status(message_id)
-      response = execute_command('querymsg', :apimsgid => message_id)
+      response = execute_command('querymsg', 'http', :apimsgid => message_id)
       parse_response(response)['Status']
     end
     
     # Returns the number of credits remaining as a float.
     def account_balance
-      response = execute_command('getbalance')
+      response = execute_command('getbalance', 'http')
       parse_response(response)['Credit'].to_f
     end
 
     protected
-      def execute_command(command_name, parameters={}) #:nodoc:
-        CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode).execute(command_name, parameters)
+      def execute_command(command_name, service, parameters={}) #:nodoc:
+        CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode).execute(command_name, service, parameters)
       end
 
       def parse_response(raw_response) #:nodoc:
