@@ -1,7 +1,8 @@
 History.txt
 License.txt
 Manifest.txt
-README
+README.txt
+README.textile
 Rakefile
 bin/sms
 lib/clickatell.rb
