@@ -53,7 +53,7 @@ CLEAN.include ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']
 RDOC_OPTS = ['--quiet', '--title', 'clickatell documentation',
     "--opname", "index.html",
     "--line-numbers", 
-    "--main", "README.txt",
+    "--main", "RDOC_README.txt",
     "--inline-source"]
 
 class Hoe
@@ -127,8 +127,8 @@ task :check_version do
 end
 
 Rake::RDocTask.new('docs') do |rd|
-  rd.main = 'README.textile'
-  rd.rdoc_files.include('README.txt', 'History.txt', 'License.txt', 'lib/**/*.rb')
+  rd.main = 'RDOC_README.txt'
+  rd.rdoc_files.include('RDOC_README.txt', 'History.txt', 'License.txt', 'lib/**/*.rb')
   rd.rdoc_dir = 'doc'
   rd.options << '--style=http://clickatell.rubyforge.org/stylesheets/rdoc.css'
   rd.options << '--tab-width=2'
