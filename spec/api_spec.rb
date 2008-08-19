@@ -21,7 +21,7 @@ module Clickatell
   
   describe "Secure API Command" do
     before do
-      @command = API::Command.new('cmdname', :secure => true)
+      @command = API::Command.new('cmdname', 'http', :secure => true)
     end
     
     it "should use HTTPS" do
@@ -33,7 +33,7 @@ module Clickatell
   describe "Command executor" do
     it "should create an API command with auth params and send it via HTTP get, returning the raw http response" do
       executor = API::CommandExecutor.new(:session_id => '12345')
-      API::Command.should_receive(:new).with('cmdname', :secure => false).and_return(cmd=mock('command'))
+      API::Command.should_receive(:new).with('cmdname', 'http', :secure => false).and_return(cmd=mock('command'))
       uri = stub('uri', :host => 'example.com', :port => 80, :scheme => 'http', :path => '/foo/bar', :query => 'a=b')
       cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
       Net::HTTP.should_receive(:new).with('example.com', 80).and_return(transport=mock('http'))
@@ -41,12 +41,12 @@ module Clickatell
       yielded_transport=mock('http')
       yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return([raw_response=mock('http_response'), body = stub('body')])
       transport.should_receive(:start).and_yield(yielded_transport).and_return([raw_response, body])
-      executor.execute('cmdname', :param_one => 'foo').should == raw_response
+      executor.execute('cmdname', 'http', :param_one => 'foo').should == raw_response
     end
     
     it "should create a secure API command and send command using HTTPS if secure is true" do
       executor = API::CommandExecutor.new({:session_id => '12345'}, secure=true)
-      API::Command.should_receive(:new).with('cmdname', :secure => true).and_return(cmd=mock('command'))
+      API::Command.should_receive(:new).with('cmdname', 'http', :secure => true).and_return(cmd=mock('command'))
       uri = stub('uri', :host => 'example.com', :port => 443, :scheme => 'https', :path => '/foo/bar', :query => 'a=b')
       cmd.should_receive(:with_params).with(:param_one => 'foo', :session_id => '12345').and_return(uri)
       Net::HTTP.should_receive(:new).with('example.com', 443).and_return(transport=mock('http'))
@@ -54,7 +54,7 @@ module Clickatell
       yielded_transport=mock('http')
       yielded_transport.should_receive(:get).with('/foo/bar?a=b').and_return([raw_response=mock('http_response'), body = stub('body')])
       transport.should_receive(:start).and_yield(yielded_transport).and_return([raw_response, body])
-      executor.execute('cmdname', :param_one => 'foo').should == raw_response
+      executor.execute('cmdname', 'http', :param_one => 'foo').should == raw_response
     end
   end
   
@@ -67,7 +67,7 @@ module Clickatell
     end
     
     it "should return session_id for successful authentication" do
-      @executor.should_receive(:execute).with('auth',
+      @executor.should_receive(:execute).with('auth', 'http', 
         :api_id => '1234',
         :user => 'joebloggs',
         :password => 'superpass'
@@ -77,12 +77,12 @@ module Clickatell
     end
     
     it "should support ping" do
-      @executor.should_receive(:execute).with('ping', :session_id => 'abcdefg').and_return(response=mock('response'))
+      @executor.should_receive(:execute).with('ping', 'http', :session_id => 'abcdefg').and_return(response=mock('response'))
       @api.ping('abcdefg').should == response
     end
     
     it "should support sending messages, returning the message id" do
-      @executor.should_receive(:execute).with('sendmsg',
+      @executor.should_receive(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',
         :text => 'hello world'
       ).and_return(response=mock('response'))
@@ -91,7 +91,7 @@ module Clickatell
     end
     
     it "should support sending messages with custom sender, passing the appropriate feature mask, returning the message id" do
-      @executor.should_receive(:execute).with('sendmsg',
+      @executor.should_receive(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',
         :text => 'hello world',
         :from => 'LUKE',
@@ -102,7 +102,7 @@ module Clickatell
     end
     
     it "should ignore any invalid parameters when sending message" do
-      @executor.should_receive(:execute).with('sendmsg',
+      @executor.should_receive(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',
         :text => 'hello world',
         :from => 'LUKE',
@@ -113,7 +113,7 @@ module Clickatell
     end
     
     it "should support message status query, returning message status" do
-      @executor.should_receive(:execute).with('querymsg',
+      @executor.should_receive(:execute).with('querymsg', 'http', 
         :apimsgid => 'messageid'
       ).and_return(response=mock('response'))
       Response.should_receive(:parse).with(response).and_return('ID' => 'message_id', 'Status' => 'message_status')
@@ -121,7 +121,7 @@ module Clickatell
     end
     
     it "should support balance query, returning number of credits as a float" do
-      @executor.should_receive(:execute).with('getbalance', {}).and_return(response=mock('response'))
+      @executor.should_receive(:execute).with('getbalance', 'http', {}).and_return(response=mock('response'))
       Response.should_receive(:parse).with(response).and_return('Credit' => '10.0')
       @api.account_balance.should == 10.0
     end

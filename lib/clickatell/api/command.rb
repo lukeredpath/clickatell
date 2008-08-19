@@ -6,7 +6,7 @@ module Clickatell
     class Command
       API_SERVICE_HOST = 'api.clickatell.com'
 
-      def initialize(command_name, service, opts={})
+      def initialize(command_name, service = 'http', opts={})
         @command_name = command_name
         @service = service
         @options = { :secure => false }.merge(opts)
