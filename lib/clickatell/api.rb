@@ -63,7 +63,7 @@ module Clickatell
     def send_message(recipient, message_text, opts={})
       valid_options = opts.only(:from, :mo)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
-      valid_options[:mo] = '1' if valid_options.delete(:mo)
+      valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
       response = execute_command('sendmsg', 'http',
         {:to => recipient, :text => message_text}.merge(valid_options)
       ) 
