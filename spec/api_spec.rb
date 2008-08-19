@@ -73,7 +73,7 @@ module Clickatell
       API::CommandExecutor.stubs(:new).with({:session_id => '1234'}, false, false).returns(@executor)
     end
     
-    it "should return session_id for successful authentication" do
+    it "should use the api_id, username and password to authenticate and return the new session id" do
       @executor.expects(:execute).with('auth', 'http', 
         :api_id => '1234',
         :user => 'joebloggs',
@@ -83,12 +83,12 @@ module Clickatell
       @api.authenticate('1234', 'joebloggs', 'superpass').should == 'new_session_id'
     end
     
-    it "should support ping" do
-      @executor.expects(:execute).with('ping', 'http', :session_id => 'abcdefg').returns(response=mock('response'))
+    it "should support ping, using the current session_id" do
+      @executor.expects(:execute).with('ping', 'http', :session_id => 'abcdefg').returns(response = stub('response'))
       @api.ping('abcdefg').should == response
     end
     
-    it "should support sending messages, returning the message id" do
+    it "should support sending messages to a specified number, returning the message id" do
       @executor.expects(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',
         :text => 'hello world'
@@ -97,42 +97,26 @@ module Clickatell
       @api.send_message('4477791234567', 'hello world').should == 'message_id'
     end
     
-    it "should support sending messages with custom sender, passing the appropriate feature mask, returning the message id" do
-      @executor.expects(:execute).with('sendmsg', 'http', 
-        :to => '4477791234567',
-        :text => 'hello world',
-        :from => 'LUKE',
-        :req_feat => '48'
-      ).returns(response = stub('response'))
+    it "should set the :from parameter and set the :req_feat to 48 when using a custom from string when sending a message" do
+      @executor.expects(:execute).with('sendmsg', 'http', has_entries(:from => 'LUKE', :req_feat => '48')).returns(response = stub('response'))
       Response.stubs(:parse).with(response).returns('ID' => 'message_id')
       @api.send_message('4477791234567', 'hello world', :from => 'LUKE')
     end
     
-    it "should support sending messages with mobile originated set, returning the message id" do
-      @executor.expects(:execute).with('sendmsg', 'http',
-        :to => '4477791234567',
-        :text => 'hello world',
-        :mo => '1'
-      ).returns(response=mock('response'))
+    it "should set the :mo flag to 1 when :set_mobile_originated is true when sending a message" do
+      @executor.expects(:execute).with('sendmsg', 'http', has_entry(:mo => '1')).returns(response=mock('response'))
       Response.stubs(:parse).with(response).returns('ID' => 'message_id')
       @api.send_message('4477791234567', 'hello world', :set_mobile_originated => true)
     end
     
-    it "should ignore any invalid parameters when sending message" do
-      @executor.expects(:execute).with('sendmsg', 'http', 
-        :to => '4477791234567',
-        :text => 'hello world',
-        :from => 'LUKE',
-        :req_feat => '48'
-      ).returns(response = stub('response'))
+    it "should ignore any invalid parameters when sending a message" do
+      @executor.expects(:execute).with('sendmsg', 'http', Not(has_key(:any_old_param))).returns(response = stub('response'))
       Response.stubs(:parse).returns('ID' => 'foo')
       @api.send_message('4477791234567', 'hello world', :from => 'LUKE', :any_old_param => 'test')
     end
     
-    it "should support message status query, returning message status" do
-      @executor.expects(:execute).with('querymsg', 'http', 
-        :apimsgid => 'messageid'
-      ).returns(response = stub('response'))
+    it "should support message status query for a given message id, returning the message status" do
+      @executor.expects(:execute).with('querymsg', 'http', :apimsgid => 'messageid').returns(response = stub('response'))
       Response.expects(:parse).with(response).returns('ID' => 'message_id', 'Status' => 'message_status')
       @api.message_status('messageid').should == 'message_status'
     end
