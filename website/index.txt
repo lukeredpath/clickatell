@@ -1,10 +1,17 @@
 h1. Clickatell Ruby API
 
-h3. What is it?
+h2. What is it?
 
 A Ruby interface to the "Clickatell":http://www.clickatell.com SMS gateway API.
 
-h3. Installing
+h3. What's new in 0.5.0?
+
+* Added support for mobile originated flag (courtesy Dan Weinand)
+* Added support for WAP push (experimental, courtesy Zhao Lu)
+* Updated specs to use Mocha instead of the built-in RSpec mocking
+* Improved specs in general
+
+h2. Installation
 
 <p><strong>Please note:</strong> this gem has been tested on *nix based systems including Linux, BSD and OSX. The <code>sms</code> utility was written with these systems in mind and will not work out of the box on Windows. The API should still work but has not been tested at this time. If you would like Windows support, please submit patches.</p>
 
@@ -12,7 +19,7 @@ h3. Installing
 
 <pre><code>$ sudo gem install clickatell</code></pre>
 
-h4. Clickatell on GitHub
+h3. Clickatell on GitHub
 
 The source repository for clickatell has been <a href="http://github.com/lukeredpath/clickatell/">moved to GitHub</a>.
 
@@ -24,16 +31,15 @@ You can still access the old subversion repository although this is unlikely to 
 
 You can view the <a href="/rdoc">RDoc documentation</a> and the <a href="/specs.html">code specs</a>.
 
-h3. The basics
+h2. Basic Usage
 
 To use this gem, you will need sign up for an account at "the Clickatell website":http://www.clickatell.com. 
 Once you are registered and logged into your account centre, you should add 
 an HTTP API connection to your account. This will give you your API_ID.
 
-h3. Demonstration of usage
+h3. Demonstration
 
-You can now use the library directly. You will need your API_ID as well as your
-account username and password.
+You can now use the library directly. You will need your API_ID as well as your account username and password.
 
 <pre><code class="ruby">
 require 'rubygems'
@@ -51,7 +57,7 @@ For debugging purposes, the API allows you to view gateway URIs as they are requ
 Clickatell::API.debug_mode = true
 </code></pre>
   
-h4. Command-line SMS Utility
+h3. Command-line SMS Utility
 
 The Clickatell gem also comes with a command-line utility that will allow you
 to send an SMS directly from the command-line. 
