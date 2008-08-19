@@ -57,7 +57,7 @@ module Clickatell
     #
     # Additional options:
     #    :from - the from number/name
-    #    :mo   - mobile originated flag
+    #    :set_mobile_originated - mobile originated flag
     #
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
