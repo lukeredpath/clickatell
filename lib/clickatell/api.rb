@@ -20,6 +20,9 @@ module Clickatell
       
       # Enable secure mode (SSL)
       attr_accessor :secure_mode
+
+      # Allow customizing URL
+      attr_accessor :api_service_host
     end
     
     # Creates a new API instance using the specified +auth options+.
