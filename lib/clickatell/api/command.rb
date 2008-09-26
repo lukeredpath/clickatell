@@ -21,7 +21,7 @@ module Clickatell
       protected
         def api_service_uri
           protocol = @options[:secure] ? 'https' : 'http'
-          api_service_host = (Clickatell::API.api_service_host.nil? ? API_SERVICE_HOST : Clickatell::API.api_service_host)
+          api_service_host = (Clickatell::API.api_service_host.blank? ? API_SERVICE_HOST : Clickatell::API.api_service_host)
           return "#{protocol}://#{api_service_host}/#{@service}/"
         end
     end

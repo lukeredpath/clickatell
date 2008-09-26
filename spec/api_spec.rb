@@ -14,6 +14,10 @@ module Clickatell
       @command = API::Command.new('cmdname')
     end
     
+    after do
+      Clickatell::API.api_service_host = nil
+    end
+    
     it "should return encoded URL for the specified command and parameters" do
       url = @command.with_params(:param_one => 'abc', :param_two => '123')
       url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
@@ -22,6 +26,24 @@ module Clickatell
     it "should URL encode any special characters in parameters" do
       url = @command.with_params(:param_one => 'abc', :param_two => 'hello world')
       url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=hello%20world")
+    end
+    
+    it "should use a custom host when constructing command URLs if specified" do
+      Clickatell::API.api_service_host = 'api.clickatell-custom.co.uk'
+      url = @command.with_params(:param_one => 'abc', :param_two => '123')
+      url.should == URI.parse("http://api.clickatell-custom.co.uk/http/cmdname?param_one=abc&param_two=123")
+    end
+    
+    it "should use the default host if specified custom host is nil" do
+      Clickatell::API.api_service_host = nil
+      url = @command.with_params(:param_one => 'abc', :param_two => '123')
+      url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
+    end
+    
+    it "should use the default host if specified custom host is an empty string" do
+      Clickatell::API.api_service_host = ''
+      url = @command.with_params(:param_one => 'abc', :param_two => '123')
+      url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
     end
   end
   
@@ -35,7 +57,7 @@ module Clickatell
       url.should == URI.parse("https://api.clickatell.com/http/cmdname?param_one=abc&param_two=123")
     end
   end
-  
+    
   describe "Command executor" do
     it "should create an API command with the given params" do
       executor = API::CommandExecutor.new(:session_id => '12345')
