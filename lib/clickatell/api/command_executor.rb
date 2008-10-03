@@ -6,10 +6,17 @@ module Clickatell
    
     # Used to run commands agains the Clickatell gateway.
     class CommandExecutor
-      def initialize(authentication_hash, secure=false, debug=false)
+      def initialize(authentication_hash, secure=false, debug=false, test_mode=false)
         @authentication_hash = authentication_hash
         @debug = debug
         @secure = secure
+        @test_mode = test_mode
+        
+        allow_request_recording if @test_mode
+      end
+      
+      def in_test_mode?
+        @test_mode
       end
       
       # Builds a command object and sends it using HTTP GET. 
@@ -29,12 +36,26 @@ module Clickatell
         end
         
         def get_response(uri)
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl = (uri.scheme == 'https')
-          http.start do |http|
-            resp, body = http.get([uri.path, uri.query].join('?'))
+          if in_test_mode?
+            sms_requests << uri
+          else
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = (uri.scheme == 'https')
+            http.start do |http|
+              resp, body = http.get([uri.path, uri.query].join('?'))
+            end
           end
         end
+        
+      private
+      
+      def allow_request_recording
+        class << self
+          define_method :sms_requests do
+            @sms_requests ||= []
+          end
+        end
+      end
     end 
   
   end

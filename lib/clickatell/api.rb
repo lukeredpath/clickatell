@@ -23,7 +23,15 @@ module Clickatell
 
       # Allow customizing URL
       attr_accessor :api_service_host
+
+      # Set to true to test message sending; this will not actually send 
+      # messages but will collect sent messages in a testable collection. 
+      # (off by default)
+      attr_accessor :test_mode
     end
+    self.debug_mode = false
+    self.secure_mode = false
+    self.test_mode = false
     
     # Creates a new API instance using the specified +auth options+.
     # +auth_options+ is a hash containing either a :session_id or 
@@ -94,10 +102,19 @@ module Clickatell
       response = execute_command('getbalance', 'http')
       parse_response(response)['Credit'].to_f
     end
+    
+    def sms_requests
+      @sms_requests ||= []
+    end
 
-    protected
+    protected      
       def execute_command(command_name, service, parameters={}) #:nodoc:
-        CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode).execute(command_name, service, parameters)
+        executor = CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode, self.class.test_mode)
+        result = executor.execute(command_name, service, parameters)
+        
+        (sms_requests << executor.sms_requests).flatten! if self.class.test_mode
+        
+        result
       end
 
       def parse_response(raw_response) #:nodoc:

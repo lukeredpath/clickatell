@@ -90,9 +90,11 @@ module Clickatell
     before do
       API.debug_mode = false
       API.secure_mode = false
+      API.test_mode = false
+      
       @executor = mock('command executor')
       @api = API.new(:session_id => '1234')
-      API::CommandExecutor.stubs(:new).with({:session_id => '1234'}, false, false).returns(@executor)
+      API::CommandExecutor.stubs(:new).with({:session_id => '1234'}, false, false, false).returns(@executor)
     end
     
     it "should use the api_id, username and password to authenticate and return the new session id" do
@@ -173,10 +175,8 @@ module Clickatell
   
   describe API, ' with no authentication options set' do
     it "should build commands with no authentication options" do
-      API.debug_mode = false
-      API.secure_mode = false
       api = API.new
-      API::CommandExecutor.stubs(:new).with({}, false, false).returns(executor = stub('command executor'))
+      API::CommandExecutor.stubs(:new).with({}, false, false, false).returns(executor = stub('command executor'))
       executor.stubs(:execute)
       api.ping('1234')
     end
@@ -184,10 +184,9 @@ module Clickatell
   
   describe API, ' in secure mode' do
     it "should execute commands securely" do
-      API.debug_mode = false
       API.secure_mode = true
       api = API.new
-      API::CommandExecutor.expects(:new).with({}, true, false).returns(executor = stub('command executor'))
+      API::CommandExecutor.expects(:new).with({}, true, false, false).returns(executor = stub('command executor'))
       executor.stubs(:execute)
       api.ping('1234')
     end
@@ -199,6 +198,32 @@ module Clickatell
       error = Clickatell::API::Error.parse(response_string)
       error.code.should == '001'
       error.message.should == 'Authentication error'
+    end
+  end
+  
+  describe API, "#test_mode" do
+    before(:each) do
+      API.secure_mode = false
+      API.test_mode = true
+      @api = API.new
+    end
+    
+    it "should create a new CommandExecutor with test_mode parameter set to true" do
+      API::CommandExecutor.expects(:new).with({}, false, false, true).once.returns(executor = mock('command executor'))
+      executor.stubs(:execute)
+      executor.stubs(:sms_requests).returns([])
+      @api.ping('1234')
+    end
+    
+    it "should record all commands" do
+      @api.ping('1234')
+      @api.sms_requests.should_not be_empty
+    end
+    
+    it "should return the recorded commands in a flattened array" do
+      @api.ping('1234')
+      @api.sms_requests.size.should == 1
+      @api.sms_requests.first.should_not be_instance_of(Array)
     end
   end
   
