@@ -4,6 +4,12 @@ require 'net/https'
 module Clickatell
   class API
    
+   class FakeHttpResponse
+     def body
+       "test"
+     end
+   end
+   
     # Used to run commands agains the Clickatell gateway.
     class CommandExecutor
       def initialize(authentication_hash, secure=false, debug=false, test_mode=false)
@@ -38,6 +44,7 @@ module Clickatell
         def get_response(uri)
           if in_test_mode?
             sms_requests << uri
+            [FakeHttpResponse.new]
           else
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = (uri.scheme == 'https')

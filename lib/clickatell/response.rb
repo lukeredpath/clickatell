@@ -10,6 +10,8 @@ module Clickatell
       
       # Returns the HTTP response body data as a hash.
       def parse(http_response)
+        return { 'OK' => 'session_id' } if API.test_mode
+        
         if http_response.body.scan(/ERR/).any?
           raise Clickatell::API::Error.parse(http_response.body)
         end
