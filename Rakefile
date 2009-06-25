@@ -54,10 +54,10 @@ begin
         rubyforge = RubyForge.new
         rubyforge.configure
         rubyforge.login
-        rubyforge.userconfig['release_notes'] = spec.summary
-        path_to_gem = File.join(File.dirname(__FILE__), "pkg", "#{spec.name}-#{spec.version}.gem")
-        puts "Publishing #{spec.name}-#{spec.version.to_s} to Rubyforge..."
-        rubyforge.add_release(spec.rubyforge_project, spec.name, spec.version.to_s, path_to_gem)
+        rubyforge.userconfig['release_notes'] = $gemspec.summary
+        path_to_gem = File.join(File.dirname(__FILE__), "pkg", "#{$gemspec.name}-#{$gemspec.version}.gem")
+        puts "Publishing #{$gemspec.name}-#{$gemspec.version.to_s} to Rubyforge..."
+        rubyforge.add_release($gemspec.rubyforge_project, $gemspec.name, $gemspec.version.to_s, path_to_gem)
       end
     
       desc "Publish RDoc to RubyForge."
