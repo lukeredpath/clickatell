@@ -1,3 +1,11 @@
+== 0.6.0
+
+* API host can now be customized (John Gibbons)
+* Fixed bug with the ampersands in messages, they are now escaped properly (John Brice)
+* Removed reliance on Object#blank? which was causing some compatibility issues (Greg Bell)
+* Added :callback option support (Greg Bell)
+* Added new test mode (Pivotal Labs)
+
 == 0.5.0
 
 * Added support for mobile originated flag (courtesy Dan Weinand)
