@@ -12,6 +12,11 @@ Spec::Rake::SpecTask.new do |t|
   t.libs = ["spec"]
 end
 
+Spec::Rake::SpecTask.new("spec_html") do |t|
+  t.spec_opts = %w(--format html)
+  t.libs = ["spec"]
+end
+
 load File.join(File.dirname(__FILE__), *%w[clickatell.gemspec])
 
 Rake::GemPackageTask.new($gemspec) do |pkg|
@@ -22,6 +27,14 @@ Rake::RDocTask.new do |rd|
   rd.main = "RDOC_README.txt"
   rd.rdoc_files.include("lib/**/*.rb", *$gemspec.extra_rdoc_files)
   rd.rdoc_dir = "rdoc"
+end
+
+desc 'Generate website files'
+task :website do
+  Dir['website/**/*.txt'].each do |txt|
+    sh %{ ruby scripts/txt2html #{txt} > #{txt.gsub(/txt$/,'html')} }
+  end
+  sh "rake -s spec_html > website/specs.html"
 end
 
 desc 'Clear out RDoc and generated packages'
