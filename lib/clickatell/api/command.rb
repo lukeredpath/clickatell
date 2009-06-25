@@ -1,3 +1,4 @@
+require "cgi"
 module Clickatell
   class API
 
@@ -14,8 +15,8 @@ module Clickatell
   
       # Returns a URL for the given parameters (a hash).
       def with_params(param_hash)
-        param_string = '?' + param_hash.map { |key, value| "#{key}=#{value}" }.sort.join('&')
-        return URI.parse(File.join(api_service_uri, @command_name + URI.encode(param_string)))
+        param_string = '?' + param_hash.map { |key, value| "#{::CGI.escape(key.to_s)}=#{::CGI.escape(value.to_s)}" }.sort.join('&')
+        return URI.parse(File.join(api_service_uri, @command_name + param_string))
       end
 
       protected

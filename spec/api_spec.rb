@@ -24,8 +24,8 @@ module Clickatell
     end
     
     it "should URL encode any special characters in parameters" do
-      url = @command.with_params(:param_one => 'abc', :param_two => 'hello world')
-      url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=hello%20world")
+      url = @command.with_params(:param_one => 'abc', :param_two => 'hello world & goodbye cruel world <grin>')
+      url.should == URI.parse("http://api.clickatell.com/http/cmdname?param_one=abc&param_two=hello+world+%26+goodbye+cruel+world+%3Cgrin%3E")
     end
     
     it "should use a custom host when constructing command URLs if specified" do
@@ -113,10 +113,10 @@ module Clickatell
     it "should support sending messages to a specified number, returning the message id" do
       @executor.expects(:execute).with('sendmsg', 'http', 
         :to => '4477791234567',
-        :text => 'hello world'
+        :text => 'hello world & goodbye'
       ).returns(response = stub('response'))
       Response.stubs(:parse).with(response).returns('ID' => 'message_id')      
-      @api.send_message('4477791234567', 'hello world').should == 'message_id'
+      @api.send_message('4477791234567', 'hello world & goodbye').should == 'message_id'
     end
     
     it "should set the :from parameter and set the :req_feat to 48 when using a custom from string when sending a message" do
