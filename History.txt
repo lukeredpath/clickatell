@@ -1,10 +1,12 @@
 == 0.5.0
+
 * Added support for mobile originated flag (courtesy Dan Weinand)
 * Added support for WAP push (experimental, courtesy Zhao Lu)
 * Updated specs to use Mocha instead of the built-in RSpec mocking
 * Improved specs in general
 
 == 0.4.1
+
 * Custom alphanumeric sender would not always be supported by default unless it was explicitly enabled using the req_feat parameter.
 
 == 0.4.0
