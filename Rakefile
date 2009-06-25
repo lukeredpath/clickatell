@@ -61,16 +61,16 @@ begin
       end
     
       desc "Publish RDoc to RubyForge."
-      task :docs => [:rdoc] do
+      task :docs => [:rdoc, :website] do
         config = YAML.load(
             File.read(File.expand_path('~/.rubyforge/user-config.yml'))
         )
  
         host = "#{config['username']}@rubyforge.org"
-        remote_dir = "/var/www/gforge-projects/clickatell/" # Should be the same as the rubyforge project name
-        local_dir = 'rdoc'
+        remote_dir = "/var/www/gforge-projects/clickatell/" 
  
-        Rake::SshDirPublisher.new(host, remote_dir, local_dir).upload
+        Rake::SshDirPublisher.new(host, remote_dir, 'website').upload
+        Rake::SshDirPublisher.new(host, File.join(remote_dir, 'rdoc'), 'rdoc').upload
       end
     end
   end
