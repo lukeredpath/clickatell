@@ -1,7 +1,6 @@
 require "rubygems"
 require "rake/gempackagetask"
 require "rake/rdoctask"
-require File.join(File.dirname(__FILE__), *%w[lib/clickatell/version])
 
 task :default => :spec
 

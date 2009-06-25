@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+require File.join(File.dirname(__FILE__), *%w[lib/clickatell/version])
 
 $gemspec = Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
