@@ -30,11 +30,11 @@ begin
     puts "Status: #{Clickatell::API::MessageStatus[status]} (##{status})."
     exit 0
   else
-    puts "Sending '#{options.message}' to #{options.recipient}..."
+    puts "Sending '#{options.message}' to #{[options.recipient].flatten.join(", ")}..."
     additional_opts = {}
     additional_opts[:from] = options.from if options.from
     msg_id = api.send_message(options.recipient, options.message, additional_opts)
-    puts "Message sent successfully (message id: #{msg_id})."
+    puts "Message sent successfully (message id: #{[msg_id].flatten.join(", ")})."
     exit 0
   end
   

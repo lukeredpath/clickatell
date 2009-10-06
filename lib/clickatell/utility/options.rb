@@ -73,6 +73,8 @@ module Clickatell
             puts parser
             exit
           end
+          
+          @options.recipient = @options.recipient.split(",")
 
           return @options
         
