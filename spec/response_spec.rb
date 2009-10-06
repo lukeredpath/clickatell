@@ -16,6 +16,10 @@ module Clickatell
       Response.parse(stub('response', :body => 'k1: foo k2: bar')).should == {'k1' => 'foo', 'k2' => 'bar'}
     end
     
+    it "should return array of hashes for multi-line success response" do
+      Response.parse(stub('response', :body => "k1: foo\nk2: bar")).should == [{'k1' => 'foo'}, {'k2' => 'bar'}]
+    end
+    
     it "should raise API::Error if response contains an error message" do
       proc { Response.parse(stub('response', :body => 'ERR: 001, Authentication failed')) }.should raise_error(Clickatell::API::Error)
     end

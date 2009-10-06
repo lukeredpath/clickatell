@@ -75,10 +75,12 @@ module Clickatell
       valid_options = opts.only(:from, :mo, :callback)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
+      recipient = recipient.join(",")if recipient.is_a?(Array)
       response = execute_command('sendmsg', 'http',
         {:to => recipient, :text => message_text}.merge(valid_options)
       ) 
-      parse_response(response)['ID']
+      response = parse_response(response)
+      response.is_a?(Array) ? response.map { |r| r['ID'] } : response['ID']
     end
 
     def send_wap_push(recipient, media_url, notification_text='', opts={})

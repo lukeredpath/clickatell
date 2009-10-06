@@ -121,6 +121,15 @@ module Clickatell
       @api.send_message('4477791234567', 'hello world & goodbye').should == 'message_id'
     end
     
+    it "should support sending messages to a multiple numbers, returning the message ids" do
+      @executor.expects(:execute).with('sendmsg', 'http', 
+        :to => '4477791234567,447779999999',
+        :text => 'hello world & goodbye'
+      ).returns(response = stub('response'))
+      Response.stubs(:parse).with(response).returns([{'ID' => 'message_1_id'}, {'ID' => 'message_2_id'}])
+      @api.send_message(['4477791234567', '447779999999'], 'hello world & goodbye').should == ['message_1_id', 'message_2_id']
+    end
+    
     it "should set the :from parameter and set the :req_feat to 48 when using a custom from string when sending a message" do
       @executor.expects(:execute).with('sendmsg', 'http', has_entries(:from => 'LUKE', :req_feat => '48')).returns(response = stub('response'))
       Response.stubs(:parse).with(response).returns('ID' => 'message_id')

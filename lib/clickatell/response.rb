@@ -15,7 +15,10 @@ module Clickatell
         if http_response.body.scan(/ERR/).any?
           raise Clickatell::API::Error.parse(http_response.body)
         end
-        YAML.load(http_response.body.scan(PARSE_REGEX).join("\n"))
+        results = http_response.body.split("\n").map do |line|
+          YAML.load(line.scan(PARSE_REGEX).join("\n"))
+        end
+        results.length == 1 ? results.first : results
       end
       
     end
