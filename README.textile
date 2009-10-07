@@ -12,6 +12,9 @@ You will need your API_ID as well as your account username and password.
   api = Clickatell::API.authenticate('your_api_id', 'your_username', 'your_password')
   api.send_message('447771234567', 'Hello from clickatell')
 
+To send a message to multiple recipients, simply pass in an array of numbers.
+
+  api.send_message(['447771234567', '447771234568'], 'Hello from clickatell')
   
 h2. Command-line SMS Utility
 
@@ -29,5 +32,9 @@ You can then use the sms utility to send a message to a single recipient:
   sms 447771234567 'Hello from clickatell'
   
 Alternatively, you can specify the username and password as a command line option. Run +sms+ without any arguments for a full list of options.
+
+The sms utility also supports multiple, comma-separated recipients (up to 100).
+
+  sms 447771111111,447772222222 "Hello everyone"
 
 See http://clickatell.rubyforge.org for further instructions.  
