@@ -16,7 +16,12 @@ module Clickatell
           raise Clickatell::API::Error.parse(http_response.body)
         end
         results = http_response.body.split("\n").map do |line|
-          YAML.load(line.scan(PARSE_REGEX).join("\n"))
+          # YAML.load converts integer strings that have leading zeroes into integers
+          # using octal rather than decimal.  This isn't what we want, so we'll strip out any
+          # leading zeroes in numbers here.
+          response_fields = line.scan(PARSE_REGEX)
+          response_fields = response_fields.collect { |field| field.gsub(/\b0+(\d+)\b/, '\1') }
+          YAML.load(response_fields.join("\n"))
         end
         results.length == 1 ? results.first : results
       end

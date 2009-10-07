@@ -23,6 +23,16 @@ module Clickatell
     it "should raise API::Error if response contains an error message" do
       proc { Response.parse(stub('response', :body => 'ERR: 001, Authentication failed')) }.should raise_error(Clickatell::API::Error)
     end
+
+    {
+      '001' => 1, '002' => 2,  '003' => 3,  '004' => 4,
+      '005' => 5, '006' => 6,  '007' => 7,  '008' => 8,
+      '009' => 9, '010' => 10, '011' => 11, '012' => 12
+    }.each do |status_str, status_int|
+      it "should parse a message status code of #{status_int} when the response body contains a status code of #{status_str}" do
+        Response.parse(stub('response', :body => "ID: 0d1d7dda17d5a24edf1555dc0b679d0e Status: #{status_str}")).should == {'ID' => '0d1d7dda17d5a24edf1555dc0b679d0e', 'Status' => status_int}
+      end
+    end
     
     describe "in test mode" do
       before(:each) do
