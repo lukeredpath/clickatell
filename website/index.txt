@@ -4,13 +4,10 @@ h2. What is it?
 
 A Ruby interface to the "Clickatell":http://www.clickatell.com SMS gateway API.
 
-h3. What's new in 0.6.0?
+h3. What's new in 0.7?
 
-* API host can now be customized (John Gibbons)
-* Fixed bug with the ampersands in messages, they are now escaped properly (John Brice)
-* Removed reliance on Object#blank? which was causing some compatibility issues (Greg Bell)
-* Added :callback option support (Greg Bell)
-* Added new test mode (Pivotal Labs)
+* Fixed bug with the response parser relating to octal numbers (via myronmarston)
+* Added support for multiple recipients in one request, up to 100 recipients
 
 h2. Installation
 
