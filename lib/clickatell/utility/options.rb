@@ -9,7 +9,8 @@ module Clickatell
         def parse(args)
           @options = self.default_options
           parser = OptionParser.new do |opts|
-            opts.banner = "Usage: sms [options] recipient message"
+            opts.banner = "Usage: sms [options] recipient(s) message"
+            opts.separator "  Recipients can be a comma-separated list, up to 100 max."
             opts.separator ""
             opts.separator "Specific options:"
           
