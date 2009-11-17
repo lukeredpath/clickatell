@@ -84,12 +84,29 @@ module Clickatell
     end
 
     def send_wap_push(recipient, media_url, notification_text='', opts={})
-      valid_options = opts.only(:from)
+      valid_options = opts.only(:from, :callback)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       response = execute_command('si_push', 'mms',
         {:to => recipient, :si_url => media_url, :si_text => notification_text, :si_id => 'foo'}.merge(valid_options)
       )
       parse_response(response)['ID']
+    end
+
+    #
+    def send_mms_push(recipient, notification_text, media_url, mms_from, mms_expire, mms_class, opts={})
+      valid_options = opts.only(:from, :callback)
+      valid_options.merge!(:req_feat => '48') if valid_options[:from]
+      response = execute_command('ind_push', 'mms',
+        {:to => recipient, :mms_subject => notification_text, :mms_from => mms_from, :mms_url => media_url, :mms_expire => mms_expire, :mms_class => mms_class}.merge(valid_options)
+      )
+      parse_response(response)['ID']
+    end
+
+    # Deletes a message. Use message ID returned from original send_message,
+    # send_wap_push or send_mms_push call.
+    def delete_message(message_id)
+      response = execute_command('delmsg', 'http', :apimsgid => message_id)
+      parse_response(response)['Status']
     end
     
     # Returns the status of a message. Use message ID returned

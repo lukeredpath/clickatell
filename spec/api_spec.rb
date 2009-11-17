@@ -121,6 +121,22 @@ module Clickatell
       @api.send_message('4477791234567', 'hello world & goodbye').should == 'message_id'
     end
     
+    it "should support sending mms push to a specified number, returning the message id" do
+      @executor.expects(:execute).with('ind_push', 'mms',
+        :to => '4477791234567',
+        :from => "sender",
+        :callback => 3,
+        :req_feat => '48',
+        :mms_subject => 'hello world & goodbye',
+        :mms_class => 80,
+        :mms_expire => 3000,
+        :mms_from => "John",
+        :mms_url => "http://www.example.com/content.mms"
+      ).returns(response = stub('response'))
+      Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+      @api.send_mms_push('4477791234567', 'hello world & goodbye', 'http://www.example.com/content.mms', 'John', 3000, 80, :callback => 3, :from => "sender").should == 'message_id'
+    end
+
     it "should support sending messages to a multiple numbers, returning the message ids" do
       @executor.expects(:execute).with('sendmsg', 'http', 
         :to => '4477791234567,447779999999',
@@ -164,6 +180,12 @@ module Clickatell
       @executor.expects(:execute).with('getbalance', 'http', {}).returns(response=mock('response'))
       Response.stubs(:parse).with(response).returns('Credit' => '10.0')
       @api.account_balance.should == 10.0
+    end
+
+    it "should support delete message for a given message id, returning the message status" do
+      @executor.expects(:execute).with('delmsg', 'http', :apimsgid => "messageid").returns(response = stub('response'))
+      Response.stubs(:parse).with(response).returns('Status' => 'OK')
+      @api.delete_message('messageid').should == 'OK'
     end
     
     it "should raise an API::Error if the response parser raises" do
