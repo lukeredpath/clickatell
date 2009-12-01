@@ -6,7 +6,7 @@ module Clickatell
     class Options #:nodoc:
       class << self
         
-        def parse(args)
+        def parse(args)          
           @options = self.default_options
           parser = OptionParser.new do |opts|
             opts.banner = "Usage: sms [options] recipient(s) message"
@@ -64,18 +64,17 @@ module Clickatell
               exit
             end
           end
-        
+          
+          @options.recipient = args[-2].split(',') rescue nil
+          @options.message   = args[-1]
+          
           parser.parse!(args)
-          @options.recipient = ARGV[-2]
-          @options.message   = ARGV[-1]
         
           if (@options.message.nil? || @options.recipient.nil?) && send_message?
             puts "You must specify a recipient and message!"
             puts parser
             exit
           end
-          
-          @options.recipient = @options.recipient.split(",")
 
           return @options
         
