@@ -1,11 +1,30 @@
 require "rubygems"
-require "rake/gempackagetask"
 require "rake/rdoctask"
+
+begin
+  require 'jeweler'
+  
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "clickatell"
+    gemspec.summary = "Ruby interface to the Clickatell SMS gateway service."
+    gemspec.email = "luke@lukeredpath.co.uk"
+    gemspec.homepage = "http://clickatell.rubyforge.org"
+    gemspec.authors = ["Luke Redpath"]
+    gemspec.executables = %w{sms}
+    gemspec.extra_rdoc_files = %w{RDOC_README.txt History.txt License.txt}
+    gemspec.has_rdoc = true
+    gemspec.rdoc_options %w{--main RDOC_README.txt}
+  end
+  
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end
 
 task :default => :spec
 
 require "spec"
 require "spec/rake/spectask"
+
 Spec::Rake::SpecTask.new do |t|
   t.spec_opts = %w(--format specdoc --colour)
   t.libs = ["spec"]
@@ -14,12 +33,6 @@ end
 Spec::Rake::SpecTask.new("spec_html") do |t|
   t.spec_opts = %w(--format html)
   t.libs = ["spec"]
-end
-
-load File.join(File.dirname(__FILE__), *%w[clickatell.gemspec])
-
-Rake::GemPackageTask.new($gemspec) do |pkg|
-  pkg.gem_spec = $gemspec
 end
 
 Rake::RDocTask.new do |rd|
