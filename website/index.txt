@@ -8,6 +8,7 @@ h3. What's new in 0.7?
 
 * Fixed bug with the response parser relating to octal numbers (via myronmarston)
 * Added support for multiple recipients in one request, up to 100 recipients
+* *0.7.1*: Fixed bug with -b balance command
 
 h2. Installation
 
