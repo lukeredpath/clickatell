@@ -13,7 +13,7 @@ begin
     gemspec.executables = %w{sms}
     gemspec.extra_rdoc_files = %w{RDOC_README.txt History.txt License.txt}
     gemspec.has_rdoc = true
-    gemspec.rdoc_options %w{--main RDOC_README.txt}
+    gemspec.rdoc_options = %w{--main RDOC_README.txt}
   end
   
 rescue LoadError
