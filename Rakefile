@@ -1,5 +1,6 @@
 require "rubygems"
 require "rake/rdoctask"
+require File.join(File.dirname(__FILE__), *%w[lib clickatell version])
 
 begin
   require 'jeweler'
@@ -14,6 +15,7 @@ begin
     gemspec.extra_rdoc_files = %w{RDOC_README.txt History.txt License.txt}
     gemspec.has_rdoc = true
     gemspec.rdoc_options = %w{--main RDOC_README.txt}
+    gemspec.version = Clickatell::VERSION
   end
   
 rescue LoadError
@@ -35,11 +37,11 @@ Spec::Rake::SpecTask.new("spec_html") do |t|
   t.libs = ["spec"]
 end
 
-Rake::RDocTask.new do |rd|
-  rd.main = "RDOC_README.txt"
-  rd.rdoc_files.include("lib/**/*.rb", *$gemspec.extra_rdoc_files)
-  rd.rdoc_dir = "rdoc"
-end
+# Rake::RDocTask.new do |rd|
+#   rd.main = "RDOC_README.txt"
+#   rd.rdoc_files.include("lib/**/*.rb", *$gemspec.extra_rdoc_files)
+#   rd.rdoc_dir = "rdoc"
+# end
 
 desc 'Generate website files'
 task :website do
