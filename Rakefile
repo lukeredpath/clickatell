@@ -18,6 +18,8 @@ begin
     gemspec.version = Clickatell::VERSION
   end
   
+  Jeweler::GemcutterTasks.new
+  
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
