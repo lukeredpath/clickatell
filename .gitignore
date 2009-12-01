@@ -4,4 +4,3 @@ pkg/*
 .specification
 pkg
 rdoc
-*.gemspec
