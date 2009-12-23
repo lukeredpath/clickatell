@@ -129,7 +129,7 @@ module Clickatell
         elsif @auth_options[:api_id]
           { :user => @auth_options[:username],
             :password => @auth_options[:password],
-            :api_id => @auth_options[:api_key] }
+            :api_id => @auth_options[:api_id] }
         else
           {}
         end
