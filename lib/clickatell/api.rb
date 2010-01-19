@@ -99,6 +99,11 @@ module Clickatell
       response = execute_command('querymsg', 'http', :apimsgid => message_id)
       parse_response(response)['Status']
     end
+
+    def message_charge(message_id)
+      response = execute_command('getmsgcharge', 'http', :apimsgid => message_id)
+      parse_response(response)['charge'].to_f
+    end
     
     # Returns the number of credits remaining as a float.
     def account_balance
