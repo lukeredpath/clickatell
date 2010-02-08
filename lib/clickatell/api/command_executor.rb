@@ -46,10 +46,19 @@ module Clickatell
             sms_requests << uri
             [FakeHttpResponse.new]
           else
-            http = Net::HTTP.new(uri.host, uri.port)
-            http.use_ssl = (uri.scheme == 'https')
-            http.start do |http|
-              resp, body = http.get([uri.path, uri.query].join('?'))
+            request = [uri.path, uri.query].join('?')
+
+            if API.proxy_host
+              http = Net::HTTP::Proxy(API.proxy_host, API.proxy_port, API.proxy_username, API.proxy_password)
+              http.start(uri.host) do |http|
+                resp, body = http.get(request)
+              end
+            else
+              http = Net::HTTP.new(uri.host, uri.port)
+              http.use_ssl = (uri.scheme == 'https')
+              http.start do |http|
+                resp, body = http.get(request)
+              end
             end
           end
         end

@@ -24,6 +24,9 @@ module Clickatell
       # Allow customizing URL
       attr_accessor :api_service_host
 
+      # Set to your HTTP proxy details (off by default)
+      attr_accessor :proxy_host, :proxy_port, :proxy_username, :proxy_password
+
       # Set to true to test message sending; this will not actually send 
       # messages but will collect sent messages in a testable collection. 
       # (off by default)
