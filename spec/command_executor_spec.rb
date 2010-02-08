@@ -22,6 +22,36 @@ module Clickatell
         it "should not record requests" do
           @executor.should_not respond_to(:sms_requests)
         end
+
+        describe "without a proxy" do
+          before do
+            @http = mock()
+            @http.expects(:use_ssl=).with(false)
+            @http.expects(:start).returns([])
+            Net::HTTP.expects(:new).with(API::Command::API_SERVICE_HOST, 80).returns(@http)
+          end
+
+          it "should execute commands through the proxy" do
+            @executor.execute("foo", "http")
+          end
+        end
+
+        describe "with a proxy" do
+          before do
+            API.proxy_host     = @proxy_host     = "proxy.example.com"
+            API.proxy_port     = @proxy_port     = "1234"
+            API.proxy_username = @proxy_username = "joeschlub"
+            API.proxy_password = @proxy_password = "secret"
+
+            @http = mock()
+            @http.expects(:start).with(API::Command::API_SERVICE_HOST).returns([])
+            Net::HTTP.expects(:Proxy).with(@proxy_host, @proxy_port, @proxy_username, @proxy_password).returns(@http)
+          end
+
+          it "should execute commands through the proxy" do
+            @executor.execute("foo", "http")
+          end
+        end
       end
       
       describe "in test mode" do
