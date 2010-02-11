@@ -6,35 +6,68 @@ h2. Basic Usage
 
 You will need your API_ID as well as your account username and password.
 
+<pre>
+<code>
   require 'rubygems'
   require 'clickatell'
-  
+
   api = Clickatell::API.authenticate('your_api_id', 'your_username', 'your_password')
   api.send_message('447771234567', 'Hello from clickatell')
+</code>
+</pre>
 
 To send a message to multiple recipients, simply pass in an array of numbers.
 
+<pre>
+<code>
   api.send_message(['447771234567', '447771234568'], 'Hello from clickatell')
-  
+</code>
+</pre>
+
+h2. HTTP Proxy
+
+You can configure the library to use a HTTP proxy when communicating with Clickatell.
+
+<pre>
+<code>
+  Clickatell::API.proxy_host     = 'my.proxy.com'
+  Clickatell::API.proxy_port     = 1234
+  Clickatell::API.proxy_username = 'joeschlub'
+  Clickatell::API.proxy_password = 'secret'
+</code>
+</pre>
+
 h2. Command-line SMS Utility
 
-The Clickatell gem also comes with a command-line utility that will allow you to send an SMS directly from the command-line. 
+The Clickatell gem also comes with a command-line utility that will allow you to send an SMS directly from the command-line.
 
 You will need to create a YAML configuration file in your home directory, in a file called .clickatell that resembles the following:
 
+<pre>
+<code>
   # ~/.clickatell
   api_key: your_api_id
   username: your_username
   password: your_password
-  
+</code>
+</pre>
+
 You can then use the sms utility to send a message to a single recipient:
 
+<pre>
+<code>
   sms 447771234567 'Hello from clickatell'
-  
+</code>
+</pre>
+
 Alternatively, you can specify the username and password as a command line option. Run +sms+ without any arguments for a full list of options.
 
 The sms utility also supports multiple, comma-separated recipients (up to 100).
 
+<pre>
+<code>
   sms 447771111111,447772222222 "Hello everyone"
+</code>
+</pre>
 
-See http://clickatell.rubyforge.org for further instructions.  
+See http://clickatell.rubyforge.org for further instructions.
