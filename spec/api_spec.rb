@@ -163,6 +163,12 @@ module Clickatell
       Response.stubs(:parse).with(response).returns('ID' => 'message_id')
       @api.send_message('4477791234567', 'hello world', :callback => 1)
     end
+
+    it "should set the client message id to the number passed in the options hash" do
+      @executor.expects(:execute).with('sendmsg', 'http', has_entry(:climsgid => 12345678)).returns(response=mock('response'))
+      Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+      @api.send_message('4477791234567', 'hello world', :client_message_id => 12345678)
+    end
     
     it "should ignore any invalid parameters when sending a message" do
       @executor.expects(:execute).with('sendmsg', 'http', Not(has_key(:any_old_param))).returns(response = stub('response'))
