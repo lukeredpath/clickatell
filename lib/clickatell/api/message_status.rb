@@ -3,18 +3,18 @@ module Clickatell
    
     class MessageStatus
       STATUS_MAP = {
-        1  => 'Message unknown',
-        2  => 'Message queued',
-        3  => 'Delivered to gateway',
-        4  => 'Received by recipient',
-        5  => 'Error with message',
-        6  => 'User cancelled messaged delivery',
-        7  => 'Error delivering message',
-        8  => 'OK',
-        9  => 'Routing error',
-        10 => 'Message expired',
-        11 => 'Message queued for later delivery',
-        12 => 'Out of credit'
+        '001'  => 'Message unknown',
+        '002'  => 'Message queued',
+        '003'  => 'Delivered to gateway',
+        '004'  => 'Received by recipient',
+        '005'  => 'Error with message',
+        '006'  => 'User cancelled messaged delivery',
+        '007'  => 'Error delivering message',
+        '008'  => 'OK',
+        '009'  => 'Routing error',
+        '010' => 'Message expired',
+        '011' => 'Message queued for later delivery',
+        '012' => 'Out of credit'
       }
       
       def self.[](code)
