@@ -67,7 +67,8 @@ module Clickatell
     # Sends a message +message_text+ to +recipient+. Recipient
     # number should have an international dialing prefix and
     # no leading zeros (unless you have set a default prefix
-    # in your clickatell account centre).
+    # in your clickatell account centre). Messages over 153 characters
+    # are split into multiple messages.
     #
     # Additional options:
     #    :from - the from number/name
@@ -80,6 +81,9 @@ module Clickatell
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
       valid_options.merge!(:climsgid => opts[:client_message_id]) if opts[:client_message_id]
+      if message_text.length > 153
+        valid_options.merge!(:concat => (message_text.length.to_f / 153).ceil)
+      end
       recipient = recipient.join(",")if recipient.is_a?(Array)
       response = execute_command('sendmsg', 'http',
         {:to => recipient, :text => message_text}.merge(valid_options)
