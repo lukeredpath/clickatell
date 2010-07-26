@@ -31,7 +31,11 @@ module Clickatell
       def execute(command_name, service, parameters={})
         request_uri = command(command_name, service, parameters)
         puts "[debug] Sending request to #{request_uri}" if @debug
-        get_response(request_uri)
+        result = get_response(request_uri)
+        if result.is_a?(Array)
+          result = result.first
+        end
+        result
       end
       
       protected
