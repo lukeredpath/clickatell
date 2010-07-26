@@ -1,3 +1,10 @@
+== 0.8
+
+* Added fix for Ruby 1.9 (Ahmed Al Hafoudh)
+* Fixed a bug handling error codes above 008 (Sean Kibler)
+* Added HTTP proxy support (Josh Bassett)
+
+
 == 0.7.1
 
 * Fixed broken -b (balance) command
