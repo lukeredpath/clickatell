@@ -51,7 +51,8 @@ rescue Clickatell::API::Error => e
     exit 1
   else
     puts "Unexpected error occurred. #{e.message} (error code: #{e.code})."
-    puts "Please contact the author (contact@lukeredpath.co.uk) with the above error."
+    puts "Please file any bugs on GitHub (http://github.com/lukeredpath/clickatell/issues)."
+    puts "A list of Clickatell error codes can be found in their API documentation (http://is.gd/egeS7)."
     exit 1
   end
   
