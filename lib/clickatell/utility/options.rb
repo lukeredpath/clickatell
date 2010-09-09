@@ -65,7 +65,7 @@ module Clickatell
             end
           end
           
-          @options.recipient = args[-2].split(',') rescue nil
+          @options.recipient = args[-2].split(',').map { |r| r.gsub(/^\+/, '') } rescue nil
           @options.message   = args[-1]
           
           parser.parse!(args)
