@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{clickatell}
-  s.version = "0.8.1"
+  s.version = "0.8.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luke Redpath"]
-  s.date = %q{2010-08-13}
+  s.date = %q{2010-09-09}
   s.default_executable = %q{sms}
   s.email = %q{luke@lukeredpath.co.uk}
   s.executables = ["sms"]
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
      "lib/core-ext/hash.rb",
      "scripts/txt2html",
      "spec/api_spec.rb",
-     "spec/cli_options_test.rb",
+     "spec/cli_options_spec.rb",
      "spec/command_executor_spec.rb",
      "spec/hash_ext_spec.rb",
      "spec/response_spec.rb",
@@ -63,12 +63,11 @@ Gem::Specification.new do |s|
   s.summary = %q{Ruby interface to the Clickatell SMS gateway service.}
   s.test_files = [
     "spec/api_spec.rb",
-     "spec/cli_options_test.rb",
+     "spec/cli_options_spec.rb",
      "spec/command_executor_spec.rb",
      "spec/hash_ext_spec.rb",
      "spec/response_spec.rb",
-     "spec/spec_helper.rb",
-     "test/clickatell_api_test.rb"
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
