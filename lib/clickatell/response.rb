@@ -14,7 +14,7 @@ module Clickatell
         
         lines = http_response.body.split("\n").reject {|line| line.strip.size == 0 }
         
-        if lines.size == 1 && lines.first =~ /^ERR:/ && 
+        if lines.size == 1 && lines.first =~ /^ERR:/
           raise Clickatell::API::Error.parse(lines.first)
         end
         results = lines.map do |line|
