@@ -73,9 +73,10 @@ module Clickatell
     #    :from - the from number/name
     #    :set_mobile_originated - mobile originated flag
     #    :client_message_id - user specified message id that can be used in place of Clickatell issued API message ID for querying message
+    #    :concat - number of concatenations allowed. I.E. how long is a message allowed to be.
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
-      valid_options = opts.only(:from, :mo, :callback, :climsgid)
+      valid_options = opts.only(:from, :mo, :callback, :climsgid, :concat)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
       valid_options.merge!(:climsgid => opts[:client_message_id]) if opts[:client_message_id]
