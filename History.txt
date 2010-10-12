@@ -1,3 +1,6 @@
+== 0.9
+* Added message concatenation support. Messages over 160 characters will be split in to multiple messages and the API concat parameter will be set; the concat parameter can also be set manually (Joshua Sierles, Martin Westin)
+
 == 0.8.2
 * Allow numbers to have a leading + when using the CLI
 
