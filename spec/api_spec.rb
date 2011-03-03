@@ -59,9 +59,14 @@ module Clickatell
   end
 
   describe "Command executor" do
+    before do 
+      API.proxy_host = false
+      API.test_mode = false
+    end
     it "should create an API command with the given params" do
       executor = API::CommandExecutor.new(:session_id => '12345')
       executor.stubs(:get_response).returns([])
+      API.secure_mode = false
       API::Command.expects(:new).with('cmdname', 'http', :secure => false).returns(command = stub('Command'))
       command.expects(:with_params).with(:param_one => 'foo', :session_id => '12345').returns(stub_everything('URI'))
       executor.execute('cmdname', 'http', :param_one => 'foo')
@@ -78,9 +83,12 @@ module Clickatell
     end
 
     it "should send the command over a secure HTTPS connection if :secure option is set to true" do
-      executor = API::CommandExecutor.new({:session_id => '12345'}, secure = true)
+      API.secure_mode = true
+      executor = API::CommandExecutor.new({:session_id => '12345'})
       Net::HTTP.stubs(:new).returns(http = mock('HTTP'))
       http.expects(:use_ssl=).with(true)
+      http.expects(:ca_path=)
+      http.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
       http.stubs(:start).returns([])
       executor.execute('cmdname', 'http')
     end
@@ -94,7 +102,7 @@ module Clickatell
 
       @executor = mock('command executor')
       @api = API.new(:session_id => '1234')
-      API::CommandExecutor.stubs(:new).with({:session_id => '1234'}, false, false, false).returns(@executor)
+      API::CommandExecutor.stubs(:new).with({:session_id => '1234'}).returns(@executor)
     end
 
     it "should use the api_id, username and password to authenticate and return the new session id" do
@@ -197,7 +205,7 @@ module Clickatell
   describe API, ' with no authentication options set' do
     it "should build commands with no authentication options" do
       api = API.new
-      API::CommandExecutor.stubs(:new).with({}, false, false, false).returns(executor = stub('command executor'))
+      API::CommandExecutor.stubs(:new).with({}).returns(executor = stub('command executor'))
       executor.stubs(:execute)
       api.ping('1234')
     end
@@ -207,7 +215,7 @@ module Clickatell
     it "should execute commands securely" do
       API.secure_mode = true
       api = API.new
-      API::CommandExecutor.expects(:new).with({}, true, false, false).returns(executor = stub('command executor'))
+      API::CommandExecutor.expects(:new).with({}).returns(executor = stub('command executor'))
       executor.stubs(:execute)
       api.ping('1234')
     end
@@ -230,7 +238,7 @@ module Clickatell
     end
 
     it "should create a new CommandExecutor with test_mode parameter set to true" do
-      API::CommandExecutor.expects(:new).with({}, false, false, true).once.returns(executor = mock('command executor'))
+      API::CommandExecutor.expects(:new).with({}).once.returns(executor = mock('command executor'))
       executor.stubs(:execute)
       executor.stubs(:sms_requests).returns([])
       @api.ping('1234')
@@ -248,4 +256,4 @@ module Clickatell
     end
   end
 
-end
+end 

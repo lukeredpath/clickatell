@@ -1,7 +1,6 @@
 module Clickatelll end
 
 %w( core-ext/hash
-    clickatell/version 
     clickatell/api 
     clickatell/response
     

@@ -9,6 +9,10 @@ module Clickatell
         @code, @message = code, message
       end
       
+      def to_s
+        "#{@code}: #{@message}"
+      end
+      
       # Creates a new Error from a Clickatell HTTP response string
       # e.g.:
       #
