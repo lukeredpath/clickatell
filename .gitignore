@@ -1,6 +1,8 @@
 doc/*
 website/*
+*.gem
+.bundle
+Gemfile.lock
 pkg/*
 .specification
-pkg
 rdoc
