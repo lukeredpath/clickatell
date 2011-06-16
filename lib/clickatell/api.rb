@@ -78,7 +78,7 @@ module Clickatell
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
       message = message_text
-      default_concat_limit = 160
+      default_concat_limit = 153
       valid_options = opts.only(:from, :mo, :callback, :climsgid, :concat)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
@@ -86,11 +86,11 @@ module Clickatell
       if extended_chars_in_message?(message)
         valid_options.merge!(:unicode => 1)
         message = message_as_unicode(message)
-        default_concat_limit = 70
+        default_concat_limit = 63
       end
 
       if message_text.length > default_concat_limit
-        valid_options.merge!(:concat => (message_text.length.to_f / 160).ceil)
+        valid_options.merge!(:concat => [3 ,(message_text.length.to_f / default_concat_limit).ceil].min)
       end
       recipient = recipient.join(",")if recipient.is_a?(Array)
       response = execute_command('sendmsg', 'http',

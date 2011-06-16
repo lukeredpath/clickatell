@@ -220,9 +220,9 @@ module Clickatell
       end
 
       it "should set the concat flag if message text has more than 70 characters" do
-        @executor.expects(:execute).with('sendmsg', 'http', has_entries(:unicode => 1, :concat => 1)).returns(response=mock('response'))
+        @executor.expects(:execute).with('sendmsg', 'http', has_entries(:unicode => 1, :concat => 3)).returns(response=mock('response'))
         Response.stubs(:parse).with(response).returns('ID' => 'message_id')
-        @api.send_message('4477791234567', 'Há mais línguas no mundo! 日本人は、例えば、いくつかの記号を使用して')
+        @api.send_message('4477791234567', 'Há mais línguas no mundo! 日本人は、例えば、いくつかの記号を使用しています。また、中国語、アラブ人、そして他の多くの例がここに引用することができます。いくつかの数学記号、または記号ΩΨΘなどもあります。')
       end
     end
 
@@ -237,6 +237,12 @@ module Clickatell
         @executor.expects(:execute).with('sendmsg', 'http', has_entry(:text => 'No extended chars here.')).returns(response=mock('response'))
         Response.stubs(:parse).with(response).returns('ID' => 'message_id')
         @api.send_message('4477791234567', 'No extended chars here.')
+      end
+
+      it "should set the concat flag if message text has more than 160 characters" do
+        @executor.expects(:execute).with('sendmsg', 'http', has_entries(:concat => 2)).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'A very, very long message...'*10)
       end
     end
   end
