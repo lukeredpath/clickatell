@@ -77,16 +77,24 @@ module Clickatell
     #    :concat - number of concatenations allowed. I.E. how long is a message allowed to be.
     # Returns a new message ID if successful.
     def send_message(recipient, message_text, opts={})
+      message = message_text
+      default_concat_limit = 160
       valid_options = opts.only(:from, :mo, :callback, :climsgid, :concat)
       valid_options.merge!(:req_feat => '48') if valid_options[:from]
       valid_options.merge!(:mo => '1') if opts[:set_mobile_originated]
       valid_options.merge!(:climsgid => opts[:client_message_id]) if opts[:client_message_id]
-      if message_text.length > 153
-        valid_options.merge!(:concat => (message_text.length.to_f / 153).ceil)
+      if extended_chars_in_message?(message)
+        valid_options.merge!(:unicode => 1)
+        message = message_as_unicode(message)
+        default_concat_limit = 70
+      end
+
+      if message_text.length > default_concat_limit
+        valid_options.merge!(:concat => (message_text.length.to_f / 160).ceil)
       end
       recipient = recipient.join(",")if recipient.is_a?(Array)
       response = execute_command('sendmsg', 'http',
-        {:to => recipient, :text => message_text}.merge(valid_options)
+        {:to => recipient, :text => message}.merge(valid_options)
       ) 
       response = parse_response(response)
       response.is_a?(Array) ? response.map { |r| r['ID'] } : response['ID']
@@ -164,6 +172,14 @@ module Clickatell
         else
           {}
         end
+      end
+
+      def extended_chars_in_message?(message_text)
+        true if message_text.unpack("U*").detect {|c| c > 127}
+      end
+
+      def message_as_unicode(message_text)
+        message_text.unpack("U*").collect {|c| "%04x" % c}.join
       end
     
   end

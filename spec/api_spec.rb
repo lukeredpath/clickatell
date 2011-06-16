@@ -205,6 +205,40 @@ module Clickatell
       Response.stubs(:parse).raises(Clickatell::API::Error.new('', ''))
       proc { @api.account_balance }.should raise_error(Clickatell::API::Error)
     end
+
+    describe "when sending a message whit extended ASCII chars" do
+      it "should set the unicode flag" do
+        @executor.expects(:execute).with('sendmsg', 'http', has_entry(:unicode => 1)).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'Há mais línguas no mundo!')
+      end
+
+      it "should send message text as unicode" do
+        @executor.expects(:execute).with('sendmsg', 'http', has_entries(:unicode => 1, :text => '004800e10020006d0061006900730020006c00ed006e00670075006100730020006e006f0020006d0075006e0064006f0021')).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'Há mais línguas no mundo!')
+      end
+
+      it "should set the concat flag if message text has more than 70 characters" do
+        @executor.expects(:execute).with('sendmsg', 'http', has_entries(:unicode => 1, :concat => 1)).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'Há mais línguas no mundo! 日本人は、例えば、いくつかの記号を使用して')
+      end
+    end
+
+    describe "when sending a message without extended ASCII chars" do
+      it "should not set the unicode flag" do
+        @executor.expects(:execute).with('sendmsg', 'http', Not(has_entry(:unicode => 1))).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'No extended chars here.')
+      end
+
+      it "should send message text as is" do
+        @executor.expects(:execute).with('sendmsg', 'http', has_entry(:text => 'No extended chars here.')).returns(response=mock('response'))
+        Response.stubs(:parse).with(response).returns('ID' => 'message_id')
+        @api.send_message('4477791234567', 'No extended chars here.')
+      end
+    end
   end
   
   describe API, ' when authenticating' do
