@@ -70,7 +70,7 @@ module Clickatell
     # in your clickatell account centre).
     #
     # Messages over 160 characters are split into multiple messages automatically,
-    # and the :concact option will be set, overwriting any manual value of this option.
+    # and the :concat option will be set, overwriting any manual value of this option.
     #
     # You normally wouldn't need to set :concat manually and can rely on the automatica
     # splitting behaviour.
