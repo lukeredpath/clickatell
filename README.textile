@@ -1,3 +1,5 @@
+5 Aug 2013 - This library is no longer supported. 
+
 h1. Clickatell SMS Library
 
 To use this gem, you will need sign up for an account at www.clickatell.com. Once you are registered and logged into your account centre, you should add an HTTP API connection to your account. This will give you your API_ID.
