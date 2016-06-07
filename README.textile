@@ -1,4 +1,4 @@
-5 Aug 2013 - This library is no longer supported. 
+5 Aug 2013 - This library is no longer supported or maintained. A more recent Clickatell library can be found here https://github.com/xploshioOn/clickatellsend
 
 h1. Clickatell SMS Library
 
