@@ -19,7 +19,7 @@ module Clickatell
       attr_accessor :debug_mode
 
       # Enable secure mode (SSL)
-      attr_accessor :secure_mode
+      attr_accessor :secure_mode, :ca_file, :ca_path
 
       # Allow customizing URL
       attr_accessor :api_service_host
@@ -32,8 +32,10 @@ module Clickatell
       # (off by default)
       attr_accessor :test_mode
     end
+
     self.debug_mode = false
     self.secure_mode = false
+    self.ca_path = "/etc/ssl/certs"
     self.test_mode = false
 
     # Creates a new API instance using the specified +auth options+.
@@ -130,7 +132,7 @@ module Clickatell
 
     protected
       def execute_command(command_name, service, parameters={}) #:nodoc:
-        executor = CommandExecutor.new(auth_hash, self.class.secure_mode, self.class.debug_mode, self.class.test_mode)
+        executor = CommandExecutor.new(auth_hash)
         result = executor.execute(command_name, service, parameters)
 
         (sms_requests << executor.sms_requests).flatten! if self.class.test_mode

@@ -3,19 +3,21 @@ require File.dirname(__FILE__) + '/../lib/clickatell'
 
 module Clickatell
   describe "API::CommandExecutor" do
-    it "should have test mode" do
-      executor = API::CommandExecutor.new({}, false, false, :test_mode)
-      executor.should be_in_test_mode
-    end
-    
     it "should default to not test mode" do
       executor = API::CommandExecutor.new({})
       executor.should_not be_in_test_mode
     end
 
+    it "should have test mode" do
+      API.test_mode = true
+      executor = API::CommandExecutor.new({})
+      executor.should be_in_test_mode
+    end
+
     describe "#execute" do
       describe "in non-test mode" do
         before(:each) do
+          API.test_mode = false
           @executor = API::CommandExecutor.new({})
         end
         
@@ -45,11 +47,23 @@ module Clickatell
 
             @http = mock()
             @http.expects(:start).with(API::Command::API_SERVICE_HOST).returns([])
+            @http.expects(:use_ssl=)
             Net::HTTP.expects(:Proxy).with(@proxy_host, @proxy_port, @proxy_username, @proxy_password).returns(@http)
           end
 
           it "should execute commands through the proxy" do
             @executor.execute("foo", "http")
+          end
+          
+          describe "when in secure_mode" do 
+            before do 
+              API.secure_mode = true
+              @http.expects(:ca_path=)
+              @http.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
+            end
+            it "should execute commands through the proxy using ssl" do
+              @executor.execute("foo", "http")
+            end
           end
         end
       end
@@ -57,7 +71,8 @@ module Clickatell
       describe "in test mode" do
         before(:each) do
           @params = {:foo => 1, :bar => 2}
-          @executor = API::CommandExecutor.new(@params, false, false, :test_mode)
+          API.test_mode = true
+          @executor = API::CommandExecutor.new(@params)
         end
         
         it "should not make any network calls" do
