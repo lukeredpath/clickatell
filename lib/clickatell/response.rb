@@ -12,10 +12,12 @@ module Clickatell
       def parse(http_response)
         return { 'OK' => 'session_id' } if API.test_mode
         
-        if http_response.body.scan(/ERR/).any?
-          raise Clickatell::API::Error.parse(http_response.body)
+        lines = http_response.body.split("\n").reject {|line| line.strip.size == 0 }
+        
+        if lines.size == 1 && lines.first =~ /^ERR:/
+          raise Clickatell::API::Error.parse(lines.first)
         end
-        results = http_response.body.split("\n").map do |line|
+        results = lines.map do |line|
           # YAML.load converts integer strings that have leading zeroes into integers
           # using octal rather than decimal.  This isn't what we want, so we'll strip out any
           # leading zeroes in numbers here.

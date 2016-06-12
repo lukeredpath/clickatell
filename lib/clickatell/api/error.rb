@@ -15,9 +15,11 @@ module Clickatell
       #  Error.parse("ERR: 001, Authentication error")
       #  # =>  #<Clickatell::API::Error code='001' message='Authentication error'>
       def self.parse(error_string)
-        error_details = error_string.split(':').last.strip
-        code, message = error_details.split(',').map { |s| s.strip }
-        self.new(code, message)
+        if error_string =~ /^ERR: (\d+), (.*)$/
+          self.new($1, $2)
+        else
+          self.new(nil, error_string)
+        end
       end
     end
   
